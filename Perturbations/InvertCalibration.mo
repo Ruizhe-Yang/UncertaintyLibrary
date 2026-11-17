@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Perturbations;
-function InvertCalibration "传播未知增益和零点对标定反解的影响"
-  input UncertaintyLibrary.Sets.Interval reading;
-  input UncertaintyLibrary.Sets.Interval gain "Positive instrument gain";
-  input UncertaintyLibrary.Sets.Interval offset "Additive offset, reading unit";
-  output UncertaintyLibrary.Sets.Interval physical;
+function InvertCalibration "Calibration inverse with strictly positive gain bounds"
+  input UncertaintyLibrary.Sets.Interval reading "Finite ordered instrument-reading interval";
+  input UncertaintyLibrary.Sets.Interval gain "Strictly positive actual instrument-gain interval";
+  input UncertaintyLibrary.Sets.Interval offset "Additive calibration-offset interval in the reading unit";
+  output UncertaintyLibrary.Sets.Interval physical "Compatible physical-value interval from the inverse relation";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(reading) and UncertaintyLibrary.Utilities.Internal.validInterval(offset) and UncertaintyLibrary.Utilities.Internal.validInterval(gain) and gain.lo>0,"Calibration gain must be strictly positive.");
   physical := UncertaintyLibrary.Sets.Divide(UncertaintyLibrary.Sets.Interval(reading.lo-offset.hi,reading.hi-offset.lo),gain);
@@ -22,18 +22,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 传播未知增益和零点对标定反解的影响</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval reading; input UncertaintyLibrary.Sets.Interval gain \"Positive instrument gain\"; input UncertaintyLibrary.Sets.Interval offset \"Additive offset, reading unit\"; output UncertaintyLibrary.Sets.Interval physical</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 传播未知增益和零点对标定反解的影响</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.BoundedMeasurement\">UncertaintyLibrary.Examples.BoundedMeasurement</a></p>
-<p>传播未知增益和零点对标定反解的影响</p>
-<p><b>行为</b> 将 reading=gain·physical+offset 反解到真值区间。</p>
-<p><b>最小用法</b> 把标定数据的增益与零点范围和测量范围一同输入。</p>
-<p><b>适用边界</b> 增益下界须正。同一传感器的公共标定误差需保持参数相关性。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval reading</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval gain \"Positive instrument gain\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval offset \"Additive offset, reading unit\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval physical</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>For <code>reading=gain*physical+offset</code>, return the interval quotient (reading-offset)/gain. Reading, offset and gain must be finite ordered intervals, and gain.lo must be strictly positive.</p><p>Choose units consistently with that calibration relation. Gain is the actual instrument gain, unlike the relative gain-error ranges used by GainBound and CalibrationBound. The calculation admits all combinations of the three input intervals.</p></html>"));
 end InvertCalibration;

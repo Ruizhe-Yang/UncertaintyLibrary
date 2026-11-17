@@ -1,5 +1,5 @@
 within UncertaintyLibrary;
-package Constraints "Constraints"
+package Constraints "Closed-box and linear candidate feasibility"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -9,5 +9,5 @@ package Constraints "Constraints"
         Ellipse(extent={{-29.44,-17.48},{-20.24,-8.28}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Line(points={{22.08,31.28},{33.12,20.24}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid),
         Line(points={{22.08,20.24},{33.12,31.28}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid)
-      }));
+      }), Documentation(info="<html><p>Test one point against coordinate intervals or linear upper inequalities, or apply both tests to a supplied finite candidate matrix. Masks and original row indices retain the link to the supplied data.</p></html>"));
 end Constraints;

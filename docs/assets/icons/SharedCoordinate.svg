@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="-115 -115 230 230" role="img" aria-labelledby="title"><title id="title">SharedCoordinate: original Modelica icon</title><ellipse cx="0" cy="0" rx="100" ry="100" fill="rgb(255,215,136)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="0" y="-63" font-family="Arial,DejaVu Sans,sans-serif" font-size="24.96" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">f</text>
+<ellipse cx="0" cy="10" rx="7.4" ry="7.4" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-44.4,10 -8.88,10" fill="none" stroke="rgb(108,88,49)" stroke-width="2.52" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-8.88,10 -16.88,13 -16.88,7" fill="rgb(108,88,49)" stroke="rgb(108,88,49)"/>
+<polyline points="7.4,10 22.2,35.16" fill="none" stroke="rgb(108,88,49)" stroke-width="2.24" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="7.4,10 22.2,10" fill="none" stroke="rgb(108,88,49)" stroke-width="2.24" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="7.4,10 22.2,-15.16" fill="none" stroke="rgb(108,88,49)" stroke-width="2.24" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,35.16 46.62,35.16" fill="none" stroke="rgb(108,88,49)" stroke-width="3.36" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,44.04 25.16,26.28" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.62,44.04 46.62,26.28" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,10 46.62,10" fill="none" stroke="rgb(108,88,49)" stroke-width="3.36" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,18.88 25.16,1.12" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.62,18.88 46.62,1.12" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,-15.16 46.62,-15.16" fill="none" stroke="rgb(108,88,49)" stroke-width="3.36" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.16,-6.28 25.16,-24.04" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.62,-6.28 46.62,-24.04" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="-32.93" y="-11.09" font-family="Arial,DejaVu Sans,sans-serif" font-size="14.43" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">xi</text></svg>

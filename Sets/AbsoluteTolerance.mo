@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function AbsoluteTolerance "Construct a symmetric interval from a finite center and a nonnegative tolerance"
+function AbsoluteTolerance "Symmetric interval from an absolute tolerance"
   extends Modelica.Icons.Function;
-input Real center;
-  input Real tol(min=0);
-  output UncertaintyLibrary.Sets.Interval bounds;
+input Real center "Nominal value in the application unit";
+  input Real tol(min=0) "Nonnegative absolute tolerance";
+  output UncertaintyLibrary.Sets.Interval bounds "Closed interval defined by the absolute tolerance";
 algorithm
   assert(tol>=0,"Negative tolerance.");
   bounds:=UncertaintyLibrary.Sets.Interval(center-(tol),center+(tol));
@@ -20,5 +20,5 @@ algorithm
         Text(extent={{5.92,23.3},{48.1,3.32}}, textString="+d", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Construct a symmetric interval from a finite center and a nonnegative tolerance.</p><p><b>Interfaces</b> input Real center; input Real tol(min=0); output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Construct a symmetric interval from a finite center and a nonnegative tolerance</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return <code>[center-tol,center+tol]</code>. The tolerance must be nonnegative and use the same unit as the centre.</p><p>Call <code>AbsoluteTolerance(center,tol)</code>. The calculated endpoints are checked for finiteness and ordering.</p></html>"));
 end AbsoluteTolerance;

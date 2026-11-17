@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function Contains "Check membership including both endpoints"
+function Contains "Membership test including both interval endpoints"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input Real value;
-  output Boolean contains;
+input UncertaintyLibrary.Sets.Interval a "Finite ordered interval";
+  input Real value "Value to test in the interval unit";
+  output Boolean contains "True when the value lies within the inclusive endpoints";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   contains:=value>=a.lo and value<=a.hi;
@@ -18,5 +18,5 @@ algorithm
         Line(points={{-1.48,21.82},{6.956,12.94},{23.384,34.252}}, color={75,138,73}, thickness=1.5, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Check membership including both endpoints.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input Real value; output Boolean contains</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Check membership including both endpoints</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> contains</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return true when <code>a.lo &lt;= value &lt;= a.hi</code>. The interval is checked for finite ordered endpoints before the comparison.</p><p>Use the same physical unit for value and both endpoints. Equality with either endpoint is included.</p></html>"));
 end Contains;

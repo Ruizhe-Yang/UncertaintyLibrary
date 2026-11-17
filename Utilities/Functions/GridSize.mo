@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Utilities.Functions;
-function GridSize "Bounded Cartesian product size without overflow"
+function GridSize "Cartesian product cardinality capped at 4096 points"
   extends Modelica.Icons.Function;
-input Integer counts[:];
-  output Integer n;
+input Integer counts[:] "Required point count along each axis";
+  output Integer n "Product in 1 to 4096, or zero for an invalid or excessive size";
 algorithm
   n:=1;
   for i in 1:size(counts,1) loop
@@ -19,5 +19,5 @@ algorithm
         Text(extent={{-24.42,-19.62},{24.42,-52.92}}, textString="N", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Bounded Cartesian product size without overflow.</p><p><b>Interfaces</b> input Integer counts[:]; output Integer n</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Bounded Cartesian product size without overflow</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> n</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p></html>"));
+    Documentation(info="<html><p>Multiply the positive entries of <code>counts</code> while checking the product against 4096 before multiplication. Return zero if any count is less than one or the product would exceed that limit.</p><p>An empty vector returns the empty-product value one. This helper sizes candidate arrays; it does not generate points or validate interval bounds.</p></html>"));
 end GridSize;

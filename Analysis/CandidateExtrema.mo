@@ -1,13 +1,13 @@
 within UncertaintyLibrary.Analysis;
-function CandidateExtrema "Find observed extrema and their first candidate indices"
+function CandidateExtrema "Finite-candidate extrema and their first row indices"
   extends Modelica.Icons.Function;
-input Real responses[:];
-  input Boolean valid[size(responses,1)]=fill(true,size(responses,1));
-  output Real minimum;
-  output Real maximum;
-  output Integer iMin;
-  output Integer iMax;
-  output Boolean available;
+input Real responses[:] "Comparable response values in candidate-row order";
+  input Boolean valid[size(responses,1)]=fill(true,size(responses,1)) "Qualification mask for the supplied observations";
+  output Real minimum "Smallest qualified finite response, or zero when unavailable";
+  output Real maximum "Largest qualified finite response, or zero when unavailable";
+  output Integer iMin "First one-based minimum index, or zero when unavailable";
+  output Integer iMax "First one-based maximum index, or zero when unavailable";
+  output Boolean available "True when at least one qualified finite response exists";
 algorithm
   minimum:=0; maximum:=0; iMin:=0; iMax:=0; available:=false;
   for i in 1:size(responses,1) loop
@@ -33,5 +33,5 @@ algorithm
         Line(points={{-41.44,-35.9},{41.44,-35.9}}, color={128,128,128}, thickness=0.5, pattern=LinePattern.Dash),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Find observed extrema and their first candidate indices.</p><p><b>Interfaces</b> input Real responses[:]; input Boolean valid[size(responses,1)]=fill(true,size(responses,1)); output Real minimum; output Real maximum; output Integer iMin; output Integer iMax; output Boolean available</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Find observed extrema and their first candidate indices</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Only supplied candidate values are compared. Ties retain the earliest input row.</p><p><b>Observables</b> minimum, maximum, iMin, iMax, available</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>Find the minimum and maximum among entries whose validity flag is true and whose response is finite. Equal extrema retain the first qualifying index.</p><p>If no entry qualifies, minimum, maximum and both indices are zero and available=false. These are extrema of the supplied observations, not bounds on an unsampled parameter domain.</p></html>"));
 end CandidateExtrema;

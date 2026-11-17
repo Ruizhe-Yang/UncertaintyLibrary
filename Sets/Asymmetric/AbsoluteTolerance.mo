@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets.Asymmetric;
-function AbsoluteTolerance "由有符号名义值和非对称绝对公差构造闭区间"
-  input Real nominal = 1;
-  input Real lowerTolerance = 0.1 "Nonnegative subtraction in the nominal unit";
-  input Real upperTolerance = 0.1 "Nonnegative addition in the nominal unit";
-  output UncertaintyLibrary.Sets.Interval bounds;
+function AbsoluteTolerance "Interval from separate lower and upper absolute tolerances"
+  input Real nominal = 1 "Signed nominal value";
+  input Real lowerTolerance = 0.1 "Nonnegative allowance subtracted from the nominal value";
+  input Real upperTolerance = 0.1 "Nonnegative allowance added to the nominal value";
+  output UncertaintyLibrary.Sets.Interval bounds "Closed interval with the two absolute allowances";
 algorithm
   assert(lowerTolerance>=0 and upperTolerance>=0,"Tolerances must be nonnegative.");
   bounds := UncertaintyLibrary.Sets.Interval(nominal-lowerTolerance,nominal+upperTolerance);
@@ -22,18 +22,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 由有符号名义值和非对称绝对公差构造闭区间</p><p><b>Interfaces</b> input Real nominal = 1; input Real lowerTolerance = 0.1 \"Nonnegative subtraction in the nominal unit\"; input Real upperTolerance = 0.1 \"Nonnegative addition in the nominal unit\"; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 由有符号名义值和非对称绝对公差构造闭区间</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p>
-<p>由有符号名义值和非对称绝对公差构造闭区间</p>
-<p><b>行为</b> 名义值减下侧公差并加上侧公差，端点均包含。</p>
-<p><b>最小用法</b> 在参数声明中使用 AbsoluteTolerance(2,0.1,0.2)。</p>
-<p><b>适用边界</b> 输入与输出端点同单位。绝对公差为零允许点区间。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real nominal = 1</code></li>
-<li><code>input Real lowerTolerance = 0.1 \"Nonnegative subtraction in the nominal unit\"</code></li>
-<li><code>input Real upperTolerance = 0.1 \"Nonnegative addition in the nominal unit\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval bounds</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">MechanicalInertiaInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Return <code>[nominal-lowerTolerance,nominal+upperTolerance]</code>. Each allowance must be nonnegative and use the nominal quantity's unit.</p><p>The result is checked for finite ordered endpoints. The two allowances need not be equal, and the nominal value may have either sign.</p></html>"));
 end AbsoluteTolerance;

@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Candidates;
 function Grid1D "Uniform closed-interval grid with a midpoint singleton"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input Integer n(min=1)=3;
-  output Real grid[n];
+input UncertaintyLibrary.Sets.Interval a "Finite ordered interval to sample";
+  input Integer n(min=1)=3 "Positive number of deterministic grid points";
+  output Real grid[n] "Uniform values including endpoints, or a midpoint singleton";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   assert(n>=1,"Grid needs at least one point.");
@@ -23,5 +23,5 @@ algorithm
         Text(extent={{-13.32,29.96},{13.32,8.5}}, textString="n", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Uniform closed-interval grid with a midpoint singleton.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input Integer n(min=1)=3; output Real grid[n]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Uniform closed-interval grid with a midpoint singleton</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> grid</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Return n equally spaced points on a finite ordered interval. For n=1, return its midpoint; for n&gt;1, include both endpoints in ascending order.</p><p>The points are deterministic selections. No probability distribution, integration weight or candidate response is assigned by this function.</p></html>"));
 end Grid1D;

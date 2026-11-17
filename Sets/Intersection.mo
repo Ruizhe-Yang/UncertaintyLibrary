@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Sets;
-function Intersection "Intersect two closed intervals and expose emptiness"
+function Intersection "Closed-interval intersection with an explicit empty flag"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input UncertaintyLibrary.Sets.Interval b;
-  output UncertaintyLibrary.Sets.Interval bounds;
-  output Boolean empty;
+input UncertaintyLibrary.Sets.Interval a "First finite ordered interval";
+  input UncertaintyLibrary.Sets.Interval b "Second finite ordered interval";
+  output UncertaintyLibrary.Sets.Interval bounds "Intersection endpoints, or [0,0] when empty";
+  output Boolean empty "True when the two closed intervals do not overlap";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   assert(UncertaintyLibrary.Utilities.Functions.Valid(b),"Invalid closed interval b.");
@@ -27,5 +27,5 @@ algorithm
         Line(points={{13.32,6.28},{13.32,-31.46}}, color={108,88,49}, thickness=0.6, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Intersect two closed intervals and expose emptiness.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input UncertaintyLibrary.Sets.Interval b; output UncertaintyLibrary.Sets.Interval bounds; output Boolean empty</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Intersect two closed intervals and expose emptiness</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> When empty is true, bounds is a placeholder and has no set meaning.</p><p><b>Observables</b> empty</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return the overlapping interval and an <code>empty</code> flag. A shared endpoint is a nonempty singleton intersection.</p><p>Read both outputs from <code>Intersection(a,b)</code>. When empty=true, bounds is the placeholder [0,0]; that placeholder must not be interpreted as an actual intersection.</p></html>"));
 end Intersection;

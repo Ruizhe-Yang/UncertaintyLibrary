@@ -1,5 +1,5 @@
 within UncertaintyLibrary.UsersGuide;
-class Limitations "Use only within the component assumptions and the documented evidence coverage."
+class Limitations "Numerical assumptions, coverage and known interface limits"
   extends Modelica.Icons.Information;
-  annotation(Documentation(info="<html><p>Use only within the component assumptions and the documented evidence coverage.</p></html>"));
+  annotation(Documentation(info="<html><p>Intervals and finite candidates express deterministic assumptions. Independent interval arithmetic can lose dependence between repeated quantities, while a shared coordinate specifies one particular coupled variation. The code does not supply directed outward rounding or probability distributions.</p><p>Observed extrema and sampled envelopes cover the supplied candidates and samples. Keep local finite differences distinct from whole-domain bounds. Physical range functions apply only under their stated sign and constitutive assumptions.</p><p>Candidates.FilterCombinations calls LinearFeasibility with incompatible arguments and output counts. The defined LinearFeasibility interface is (A,b,x,rowTolerance), returning feasible and mask. Use Constraints.FilterCandidates for the documented box-and-linear-inequality filtering path.</p></html>"));
 end Limitations;

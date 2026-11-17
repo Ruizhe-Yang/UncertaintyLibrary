@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Constraints;
-function LinearFeasibility "Check each row of a deterministic linear constraint"
+function LinearFeasibility "Row-wise feasibility of linear upper inequalities"
   extends Modelica.Icons.Function;
-input Real A[:,:];
-  input Real b[size(A,1)];
-  input Real x[size(A,2)];
-  input Real rowTolerance[size(A,1)]=fill(0,size(A,1));
-  output Boolean feasible;
-  output Boolean mask[size(A,1)];
+input Real A[:,:] "Coefficient matrix with one inequality per row";
+  input Real b[size(A,1)] "Upper bound for each inequality row";
+  input Real x[size(A,2)] "Point to be tested";
+  input Real rowTolerance[size(A,1)]=fill(0,size(A,1)) "Nonnegative allowance in the unit of each inequality row";
+  output Boolean feasible "True when every relaxed upper inequality is satisfied";
+  output Boolean mask[size(A,1)] "Feasibility result for each inequality row";
 algorithm
   feasible:=true;
   for i in 1:size(A,1) loop
@@ -26,5 +26,5 @@ algorithm
         Line(points={{17.76,6.28},{26.64,15.16}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Check each row of a deterministic linear constraint.</p><p><b>Interfaces</b> input Real A[:,:]; input Real b[size(A,1)]; input Real x[size(A,2)]; input Real rowTolerance[size(A,1)]=fill(0,size(A,1)); output Boolean feasible; output Boolean mask[size(A,1)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Check each row of a deterministic linear constraint</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Each row tolerance has the units of the corresponding right-hand side.</p><p><b>Observables</b> feasible, mask</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates\">UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates</a></p></html>"));
+    Documentation(info="<html><p>Call <code>LinearFeasibility(A,b,x,rowTolerance)</code> to obtain <code>feasible</code> and the per-row <code>mask</code>. Row i accepts <code>sum(A[i,j]*x[j]) &lt;= b[i]+rowTolerance[i]</code>; every row must pass.</p><p>Each row tolerance must be nonnegative and expressed in that row's unit. Supply finite, consistently scaled data. With no constraint rows, feasibility is true and the mask is empty.</p></html>"));
 end LinearFeasibility;

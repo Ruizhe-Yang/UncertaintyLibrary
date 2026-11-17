@@ -1,19 +1,19 @@
 within UncertaintyLibrary.Candidates;
-function FilterCombinations "按盒与耦合约束筛选候选行并保留原行号"
-  input Real candidates[:,:];
-  input UncertaintyLibrary.Sets.Interval ranges[size(candidates,2)];
-  input Real coefficients[:,size(candidates,2)];
-  input Real lower[size(coefficients,1)];
-  input Real upper[size(coefficients,1)];
-  input Real tolerance(min=0) = 0;
-  output Boolean feasible[size(candidates,1)];
-  output Integer feasibleCount;
-  output Real violation[size(candidates,1)] "Largest nonnegative violation of any supplied bound";
+function FilterCombinations "Box and coupled-constraint filtering wrapper"
+  input Real candidates[:,:] "Candidate rows intended for feasibility filtering";
+  input UncertaintyLibrary.Sets.Interval ranges[size(candidates,2)] "Intended inclusive range of each candidate coordinate";
+  input Real coefficients[:,size(candidates,2)] "Intended linear-constraint coefficients by row";
+  input Real lower[size(coefficients,1)] "Intended lower bound for each linear-constraint row";
+  input Real upper[size(coefficients,1)] "Intended upper bound for each linear-constraint row";
+  input Real tolerance(min=0) = 0 "Intended nonnegative allowance for the constraint comparisons";
+  output Boolean feasible[size(candidates,1)] "Intended row-feasibility mask after correcting the internal call";
+  output Integer feasibleCount "Intended number of feasible candidate rows";
+  output Real violation[size(candidates,1)] "Intended largest nonnegative bound violation for each row";
 protected
-  Boolean linearOK;
-  Real rowViolation;
-  Real rowMargin;
-  Real boxViolation;
+  Boolean linearOK "Intended combined linear-feasibility result";
+  Real rowViolation "Intended linear violation result absent from the called interface";
+  Real rowMargin "Intended linear margin result absent from the called interface";
+  Real boxViolation "Largest coordinate-box violation for the current row";
 algorithm
   assert(size(candidates,1)>0 and size(candidates,2)>0 and tolerance>=0,"Invalid candidate matrix.");
   for j in 1:size(candidates,2) loop
@@ -50,23 +50,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 按盒与耦合约束筛选候选行并保留原行号</p><p><b>Interfaces</b> input Real candidates[:,:]; input UncertaintyLibrary.Sets.Interval ranges[size(candidates,2)]; input Real coefficients[:,size(candidates,2)]; input Real lower[size(coefficients,1)]; input Real upper[size(coefficients,1)]; input Real tolerance(min=0) = 0; output Boolean feasible[size(candidates,1)]; output Integer feasibleCount; output Real violation[size(candidates,1)] \"Largest nonnegative violation of any supplied bound\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 按盒与耦合约束筛选候选行并保留原行号</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p>
-<p>按盒与耦合约束筛选候选行并保留原行号</p>
-<p><b>行为</b> 布尔掩码与原候选矩阵同顺序，越界量单独报告。</p>
-<p><b>最小用法</b> 对生成的点集或外部确定性设计表调用。仅实例化允许的点，或者屏蔽其运行结果。</p>
-<p><b>适用边界</b> 统一容差需要参数及约束行的量级适配。没有可行行不代表完整参数空间不可行。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real candidates[:,:]</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval ranges[size(candidates,2)]</code></li>
-<li><code>input Real coefficients[:,size(candidates,2)]</code></li>
-<li><code>input Real lower[size(coefficients,1)]</code></li>
-<li><code>input Real upper[size(coefficients,1)]</code></li>
-<li><code>input Real tolerance(min=0) = 0</code></li>
-<li><code>output Boolean feasible[size(candidates,1)]</code></li>
-<li><code>output Integer feasibleCount</code></li>
-<li><code>output Real violation[size(candidates,1)] \"Largest nonnegative violation of any supplied bound\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>This wrapper is intended to combine box limits with two-sided linear constraints while retaining candidate-row identities and reporting violations.</p><p><b>Interface limitation:</b> its current call to Constraints.LinearFeasibility supplies five arguments and assigns three results. That function declares four inputs, <code>(A,b,x,rowTolerance)</code>, and two outputs, <code>(feasible,mask)</code>; the argument ranks also differ. The call must be reconciled before this wrapper is used. Combine the supported box and linear feasibility results explicitly when constructing the intended filter.</p></html>"));
 end FilterCombinations;

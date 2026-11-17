@@ -1,5 +1,5 @@
 within UncertaintyLibrary;
-package Candidates "Candidates"
+package Candidates "Deterministic grids, shared coordinates and row selection"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -24,5 +24,5 @@ package Candidates "Candidates"
         Ellipse(extent={{41.676,-14.444},{46.644,-9.476}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Ellipse(extent={{41.676,9.476},{46.644,14.444}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Ellipse(extent={{41.676,32.476},{46.644,37.444}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5)
-      }));
+      }), Documentation(info="<html><p>Construct finite interval grids, box corners and coupled coordinate selections, then select existing candidate rows. These operations define explicit parameter choices without sampling probabilities.</p><p>Keep row identities when associating responses with candidates. Review the documented interface limitation before using FilterCombinations.</p></html>"));
 end Candidates;

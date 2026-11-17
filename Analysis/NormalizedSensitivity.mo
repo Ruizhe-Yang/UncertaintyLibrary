@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Analysis;
-function NormalizedSensitivity "Normalize a local slope when the reference response has sufficient magnitude"
+function NormalizedSensitivity "Normalised local slope with a response-magnitude guard"
   extends Modelica.Icons.Function;
-input Real parameterNominal;
-  input Real responseNominal;
-  input Real slope;
-  input Real floorMagnitude(min=0)=1e-12;
-  output Real value;
-  output Boolean available;
+input Real parameterNominal "Nominal value of the perturbed parameter";
+  input Real responseNominal "Response at the nominal parameter";
+  input Real slope "Local response derivative per unit parameter";
+  input Real floorMagnitude(min=0)=1e-12 "Positive minimum nominal response magnitude for normalisation";
+  output Real value "Dimensionless normalised slope, or zero when unavailable";
+  output Boolean available "Nominal response magnitude meets the denominator floor";
 algorithm
   assert(floorMagnitude>0,"Sensitivity denominator floor must be positive.");
   available:=abs(responseNominal)>=floorMagnitude;
@@ -23,5 +23,5 @@ algorithm
         Text(extent={{-23.68,-48.48},{42.92,-65.5}}, textString="x0/y0", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Normalize a local slope when the reference response has sufficient magnitude.</p><p><b>Interfaces</b> input Real parameterNominal; input Real responseNominal; input Real slope; input Real floorMagnitude(min=0)=1e-12; output Real value; output Boolean available</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Normalize a local slope when the reference response has sufficient magnitude</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> value, available</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>Return <code>(parameterNominal/responseNominal)*slope</code> when the absolute nominal response is at least floorMagnitude. Otherwise return value=0 and available=false. The positive floor uses the response unit.</p><p>Supply finite nominal values and a local slope in response-unit per parameter-unit. The availability check concerns denominator magnitude only; it does not validate input finiteness or the quality of the slope estimate.</p></html>"));
 end NormalizedSensitivity;

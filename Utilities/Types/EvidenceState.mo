@@ -1,5 +1,5 @@
 within UncertaintyLibrary.Utilities.Types;
-type EvidenceState = enumeration(COMPLETE "候选证据完整", UNDECIDED "候选数据缺失", INVALID "候选值无效", NOT_APPLICABLE "没有可行候选") "有限候选的数值证据状态"
+type EvidenceState = enumeration(COMPLETE "Collection ended and every feasible candidate has a usable observation", UNDECIDED "Collection incomplete or a feasible observation is missing", INVALID "A feasible candidate declared valid has a non-finite metric", NOT_APPLICABLE "No candidate is currently feasible") "Evidence state of the supplied finite candidate set"
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
         Rectangle(extent={{-85,-85},{85,85}}, lineColor={128,128,128}, fillColor={160,160,164}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5, radius=18),
@@ -8,6 +8,4 @@ type EvidenceState = enumeration(COMPLETE "候选证据完整", UNDECIDED "候�
         Line(points={{-37,-22},{37,-22}}, color={255,255,255}, thickness=0.7, pattern=LinePattern.Solid),
         Line(points={{-37,-43},{15,-43}}, color={255,255,255}, thickness=0.7, pattern=LinePattern.Solid)
       }),
-    Documentation(info="<html>
-<p>有限候选的数值证据状态</p>
-</html>"));
+    Documentation(info="<html><p>CandidateWorstCase reports COMPLETE when collection has ended and every feasible candidate has a usable observation. UNDECIDED covers incomplete collection or missing feasible observations. INVALID marks a non-finite metric on a feasible candidate declared valid. NOT_APPLICABLE means no candidate is currently feasible.</p><p>The state describes the supplied candidate data; it establishes no result for unsampled points.</p></html>"));

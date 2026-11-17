@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Candidates;
-function BoxCorners "Enumerate box corners with the final dimension changing fastest"
+function BoxCorners "Box-corner enumeration with the final axis changing fastest"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval box[:];
-  output Real corners[if size(box,1)<=10 then integer(2^size(box,1)) else 0,size(box,1)];
+input UncertaintyLibrary.Sets.Interval box[:] "Finite ordered interval for each coordinate";
+  output Real corners[if size(box,1)<=10 then integer(2^size(box,1)) else 0,size(box,1)] "Corner rows, with the final coordinate changing fastest";
 algorithm
   assert(size(box,1)>=1 and size(box,1)<=10,"Corner enumeration supports 1 to 10 dimensions.");
   for j in 1:size(box,1) loop
@@ -22,5 +22,5 @@ algorithm
         Ellipse(extent={{31.08,13.68},{39.96,22.56}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Enumerate box corners with the final dimension changing fastest.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval box[:]; output Real corners[if size(box,1)&lt;=10 then integer(2^size(box,1)) else 0,size(box,1)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Enumerate box corners with the final dimension changing fastest</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> At most 1024 corners. A zero-width dimension may produce repeated equal rows.</p><p><b>Observables</b> corners</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Enumerate every lower/upper endpoint combination for one to ten finite ordered intervals. The result has 2^n rows and n columns, with the final coordinate changing fastest and the all-lower corner first.</p><p>A zero-width coordinate can produce duplicate rows; they are retained. Corners are deterministic candidates and do not by themselves bound a nonlinear response with possible interior extrema.</p></html>"));
 end BoxCorners;

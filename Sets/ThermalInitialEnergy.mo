@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function ThermalInitialEnergy "按不确定热容量和初温计算相对储热"
-  input UncertaintyLibrary.Sets.Interval capacity "J/K";
-  input UncertaintyLibrary.Sets.Interval temperature "Initial K";
-  input Modelica.Units.SI.Temperature referenceTemperature = 293.15;
-  output UncertaintyLibrary.Sets.Interval energy "Relative J";
+function ThermalInitialEnergy "Thermal energy bounds relative to a reference temperature"
+  input UncertaintyLibrary.Sets.Interval capacity "Nonnegative thermal-capacity interval in joules per kelvin";
+  input UncertaintyLibrary.Sets.Interval temperature "Positive initial-temperature interval in kelvin";
+  input Modelica.Units.SI.Temperature referenceTemperature = 293.15 "Positive absolute reference temperature";
+  output UncertaintyLibrary.Sets.Interval energy "Relative thermal-energy interval in joules";
 algorithm
   assert(capacity.lo>=0 and temperature.lo>0 and referenceTemperature>0 and UncertaintyLibrary.Utilities.Internal.validInterval(temperature),"Invalid initial thermal conditions.");
   energy := UncertaintyLibrary.Sets.Multiply(capacity,UncertaintyLibrary.Sets.Interval(temperature.lo-referenceTemperature,temperature.hi-referenceTemperature));
@@ -22,18 +22,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 按不确定热容量和初温计算相对储热</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval capacity \"J/K\"; input UncertaintyLibrary.Sets.Interval temperature \"Initial K\"; input Modelica.Units.SI.Temperature referenceTemperature = 293.15; output UncertaintyLibrary.Sets.Interval energy \"Relative J\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 按不确定热容量和初温计算相对储热</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p>
-<p>按不确定热容量和初温计算相对储热</p>
-<p><b>行为</b> 储热相对于参考温度，温差跨零时允许负下界。</p>
-<p><b>最小用法</b> 从热容公差和温度初始化区间评估初始能量。</p>
-<p><b>适用边界</b> 热容视为常值，未考虑相变或温度相关比热。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval capacity \"J/K\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval temperature \"Initial K\"</code></li>
-<li><code>input Modelica.Units.SI.Temperature referenceTemperature = 293.15</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval energy \"Relative J\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ThermalCapacityInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate <code>capacity*(temperature-referenceTemperature)</code> with interval multiplication. Capacity must be nonnegative, and both absolute temperature and its reference must be positive.</p><p>Use capacity in J/K and temperatures in kelvin. The result is a relative energy in joules and can be negative below the reference temperature. Bind initial temperatures to the physical model separately.</p></html>"));
 end ThermalInitialEnergy;

@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Utilities.Views;
-block EnvelopeView "Evaluate the three supplied responses at a common sample instant"
-parameter Modelica.Units.SI.Time samplePeriod(min=0)=0.1;
-    Modelica.Blocks.Interfaces.RealInput u[3] annotation(Placement(transformation(origin={-100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,0},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput lower(start=0,fixed=true) annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput upper(start=0,fixed=true) annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.IntegerOutput nValid(start=0,fixed=true) annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
+block EnvelopeView "Sample and hold extrema of three simultaneous inputs"
+parameter Modelica.Units.SI.Time samplePeriod(min=0)=0.1 "Positive interval between simultaneous samples";
+    Modelica.Blocks.Interfaces.RealInput u[3]  "Three responses sampled at a common instant" annotation(Placement(transformation(origin={-100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,0},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput lower(start=0,fixed=true)  "Held minimum of the latest three input values" annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput upper(start=0,fixed=true)  "Held maximum of the latest three input values" annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.IntegerOutput nValid(start=0,fixed=true)  "Input count, always three without validity checking" annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
 initial equation
   assert(samplePeriod>0,"Sample period must be positive.");
 equation
@@ -37,5 +37,5 @@ equation
         Ellipse(extent={{30.415,11.465},{35.805,16.855}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Evaluate the three supplied responses at a common sample instant.</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.RealInput u[3]; Modelica.Blocks.Interfaces.RealOutput lower(start=0,fixed=true); Modelica.Blocks.Interfaces.RealOutput upper(start=0,fixed=true); Modelica.Blocks.Interfaces.IntegerOutput nValid(start=0,fixed=true)</p><p><b>Parameters</b> parameter Modelica.Units.SI.Time samplePeriod(min=0)=0.1</p><p><b>Behavior</b> Evaluate the three supplied responses at a common sample instant</p><p><b>Initialization</b> The declared start values and initialization equations apply.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> lower, upper, nValid</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.InitialConditionEnvelope\">UncertaintyLibrary.Examples.InitialConditionEnvelope</a></p></html>"));
+    Documentation(info="<html><p>At <code>sample(0,samplePeriod)</code>, set lower and upper to the minimum and maximum of the three inputs, then hold both until the next sample. The period must be positive.</p><p><code>nValid</code> is assigned the input count, always three. No qualification or finite-value check is performed. Supply three usable values; the envelope makes no statement about responses between sample instants or outside these inputs.</p></html>"));
 end EnvelopeView;

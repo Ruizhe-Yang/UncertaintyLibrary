@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Analysis;
-function LipschitzEnvelope "用各坐标的变化率上界包围整个参数盒的响应"
-  input Real nominalResponse;
-  input Real nominalPoint[:];
-  input UncertaintyLibrary.Sets.Interval ranges[size(nominalPoint,1)];
-  input Real derivativeBounds[size(nominalPoint,1)] "Output unit / corresponding input unit";
-  output UncertaintyLibrary.Sets.Interval response;
+function LipschitzEnvelope "Coordinatewise derivative envelope about a nominal point"
+  input Real nominalResponse "Model response at nominalPoint";
+  input Real nominalPoint[:] "Reference point inside the coordinate box";
+  input UncertaintyLibrary.Sets.Interval ranges[size(nominalPoint,1)] "Finite ordered range for each coordinate";
+  input Real derivativeBounds[size(nominalPoint,1)] "Nonnegative absolute coordinate derivatives bounded over the whole box";
+  output UncertaintyLibrary.Sets.Interval response "Nominal response expanded by the combined derivative radius";
 protected
-  Real radius;
+  Real radius "Sum of coordinate derivative bounds times maximum displacement";
 algorithm
   radius := 0;
   for i in 1:size(nominalPoint,1) loop
@@ -30,19 +30,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 用各坐标的变化率上界包围整个参数盒的响应</p><p><b>Interfaces</b> input Real nominalResponse; input Real nominalPoint[:]; input UncertaintyLibrary.Sets.Interval ranges[size(nominalPoint,1)]; input Real derivativeBounds[size(nominalPoint,1)] \"Output unit / corresponding input unit\"; output UncertaintyLibrary.Sets.Interval response</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 用各坐标的变化率上界包围整个参数盒的响应</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>用各坐标的变化率上界包围整个参数盒的响应</p>
-<p><b>行为</b> 把各坐标到最远端的距离乘全段导数界后相加，得到围绕名义值的外包。</p>
-<p><b>最小用法</b> 对提供可靠斜率上界的简化响应函数使用。</p>
-<p><b>适用边界</b> 单点差分灵敏度一般不能作为整个区间的导数上界。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real nominalResponse</code></li>
-<li><code>input Real nominalPoint[:]</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval ranges[size(nominalPoint,1)]</code></li>
-<li><code>input Real derivativeBounds[size(nominalPoint,1)] \"Output unit / corresponding input unit\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval response</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Expand nominalResponse by the sum of each derivative bound times the largest distance from nominalPoint to either endpoint of its coordinate range. The nominal point must lie within every finite ordered range, and derivative bounds must be nonnegative.</p><p>Supply a response evaluated at that nominal point and coordinatewise derivative bounds valid throughout the box. The function uses those bounds as assumptions; local finite-difference slopes alone do not establish them.</p></html>"));
 end LipschitzEnvelope;

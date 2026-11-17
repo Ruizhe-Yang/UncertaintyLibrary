@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Candidates;
-function CartesianGrid "Enumerate a bounded deterministic Cartesian product"
+function CartesianGrid "Deterministic Cartesian grid with a bounded total size"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval box[:];
-  input Integer counts[size(box,1)];
-  output Real candidates[UncertaintyLibrary.Utilities.Functions.GridSize(counts),size(box,1)];
+input UncertaintyLibrary.Sets.Interval box[:] "Finite ordered coordinate intervals";
+  input Integer counts[size(box,1)] "Positive uniform-grid size for each coordinate";
+  output Real candidates[UncertaintyLibrary.Utilities.Functions.GridSize(counts),size(box,1)] "Cartesian candidate rows with the final coordinate changing fastest";
 protected
-  Integer index;
-  Integer q;
+  Integer index "Remaining mixed-radix row index";
+  Integer q "Zero-based coordinate-grid index";
 algorithm
   assert(size(box,1)>=1 and size(candidates,1)>0,"Grid requires 1 to 4096 points and positive per-axis sizes.");
   for j in 1:size(box,1) loop assert(UncertaintyLibrary.Utilities.Functions.Valid(box[j]),"Invalid grid interval."); end for;
@@ -45,5 +45,5 @@ algorithm
         Ellipse(extent={{33.522,16.122},{37.518,20.118}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Enumerate a bounded deterministic Cartesian product.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval box[:]; input Integer counts[size(box,1)]; output Real candidates[UncertaintyLibrary.Utilities.Functions.GridSize(counts),size(box,1)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Enumerate a bounded deterministic Cartesian product</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> candidates</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Generate a Cartesian product of uniform per-axis grids, with the final axis changing fastest. A count of one selects the interval midpoint; larger counts include both endpoints.</p><p>Each count must be positive and the total product must not exceed 4096. Supply at least one finite ordered coordinate interval. Rows are deterministic combinations, with no probability weights or guarantee of capturing interior response extrema.</p></html>"));
 end CartesianGrid;

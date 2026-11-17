@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Analysis;
-function SineRange "传播角度区间的正弦并包含内部峰谷"
-  input UncertaintyLibrary.Sets.Interval angle "Radians";
-  output UncertaintyLibrary.Sets.Interval bounds;
+function SineRange "Sine range including enclosed peaks and troughs"
+  input UncertaintyLibrary.Sets.Interval angle "Finite ordered radian interval within the declared magnitude limit";
+  output UncertaintyLibrary.Sets.Interval bounds "Sine interval including enclosed stationary extrema";
 protected
-  Real cycle = 2*Modelica.Constants.pi;
-  Real peak = Modelica.Constants.pi/2;
-  Real valley = -Modelica.Constants.pi/2;
+  Real cycle = 2*Modelica.Constants.pi "Sine period in radians";
+  Real peak = Modelica.Constants.pi/2 "Reference angle of a positive sine peak";
+  Real valley = -Modelica.Constants.pi/2 "Reference angle of a negative sine trough";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(angle) and max(abs({angle.lo,angle.hi}))<=1e8,"Invalid or poorly scaled angle range.");
   bounds := UncertaintyLibrary.Sets.Interval(min(sin(angle.lo),sin(angle.hi)),max(sin(angle.lo),sin(angle.hi)));
@@ -29,16 +29,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 传播角度区间的正弦并包含内部峰谷</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval angle \"Radians\"; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 传播角度区间的正弦并包含内部峰谷</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>传播角度区间的正弦并包含内部峰谷</p>
-<p><b>行为</b> 端点和所有可能的正弦峰谷同时考虑，完整周期给出 [-1,1]。</p>
-<p><b>最小用法</b> 用于坡度或摆角不确定范围传到力的正弦系数。</p>
-<p><b>适用边界</b> 输入单位为弧度。极大角度需先检查相位表示精度。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval angle \"Radians\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval bounds</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">MechanicalInertiaInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate the sine at both angle endpoints and include +1 or -1 when the interval contains a corresponding periodic peak or trough. An interval spanning at least one complete cycle returns [-1,1].</p><p>Angles are in radians, with finite ordered endpoints whose absolute values do not exceed 1e8. The calculation uses ordinary Real arithmetic and the periodic structure of the sine function.</p></html>"));
 end SineRange;

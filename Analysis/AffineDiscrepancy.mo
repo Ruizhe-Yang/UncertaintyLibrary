@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Analysis;
-function AffineDiscrepancy "传播已知模型输出的缩放和偏置差异"
-  input Real prediction;
-  input UncertaintyLibrary.Sets.Interval scale = UncertaintyLibrary.Sets.Interval(0.95,1.05);
-  input UncertaintyLibrary.Sets.Interval bias = UncertaintyLibrary.Sets.Interval(-0.01,0.01);
-  output UncertaintyLibrary.Sets.Interval response;
+function AffineDiscrepancy "Scaled prediction with an additive discrepancy interval"
+  input Real prediction "Nominal scalar prediction";
+  input UncertaintyLibrary.Sets.Interval scale = UncertaintyLibrary.Sets.Interval(0.95,1.05) "Dimensionless multiplicative discrepancy interval";
+  input UncertaintyLibrary.Sets.Interval bias = UncertaintyLibrary.Sets.Interval(-0.01,0.01) "Additive discrepancy interval in the prediction unit";
+  output UncertaintyLibrary.Sets.Interval response "Prediction interval after scale and bias";
 protected
-  UncertaintyLibrary.Sets.Interval scaled;
+  UncertaintyLibrary.Sets.Interval scaled "Intermediate scaled-prediction interval";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(bias),"Invalid discrepancy bias range.");
   scaled := UncertaintyLibrary.Sets.Multiply(UncertaintyLibrary.Sets.Interval(prediction,prediction),scale);
@@ -23,18 +23,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 传播已知模型输出的缩放和偏置差异</p><p><b>Interfaces</b> input Real prediction; input UncertaintyLibrary.Sets.Interval scale = UncertaintyLibrary.Sets.Interval(0.95,1.05); input UncertaintyLibrary.Sets.Interval bias = UncertaintyLibrary.Sets.Interval(-0.01,0.01); output UncertaintyLibrary.Sets.Interval response</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 传播已知模型输出的缩放和偏置差异</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>传播已知模型输出的缩放和偏置差异</p>
-<p><b>行为</b> 先传播预测值乘以缩放区间，再加偏置区间。</p>
-<p><b>最小用法</b> 由实验或设计给出误差上下界，可在结果输出侧表达简化模型偏差。</p>
-<p><b>适用边界</b> 模型只传播给定区间。偏差边界的依据由使用者提供。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real prediction</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval scale = UncertaintyLibrary.Sets.Interval(0.95,1.05)</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval bias = UncertaintyLibrary.Sets.Interval(-0.01,0.01)</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval response</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Multiply the point interval [prediction,prediction] by scale, then add the lower and upper bias endpoints to the corresponding product endpoints. Negative predictions are handled by the interval product.</p><p>Supply a dimensionless scale interval and a bias in the prediction unit. The two ranges are treated independently; no coupling relation or probability distribution is represented.</p></html>"));
 end AffineDiscrepancy;

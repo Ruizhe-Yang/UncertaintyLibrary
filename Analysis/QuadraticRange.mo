@@ -1,15 +1,15 @@
 within UncertaintyLibrary.Analysis;
-function QuadraticRange "二次函数在有界区间上的极值传播"
-  input UncertaintyLibrary.Sets.Interval x;
-  input Real a = 1;
-  input Real b = 0;
-  input Real c = 0;
-  output UncertaintyLibrary.Sets.Interval bounds;
+function QuadraticRange "Quadratic range including an interior vertex"
+  input UncertaintyLibrary.Sets.Interval x "Finite ordered interval of the independent variable";
+  input Real a = 1 "Quadratic coefficient";
+  input Real b = 0 "Linear coefficient";
+  input Real c = 0 "Constant term";
+  output UncertaintyLibrary.Sets.Interval bounds "Extrema from endpoints and any interior vertex";
 protected
-  Real y1;
-  Real y2;
-  Real vertex;
-  Real yVertex;
+  Real y1 "Value at the lower endpoint";
+  Real y2 "Value at the upper endpoint";
+  Real vertex "Stationary coordinate for a nonzero quadratic coefficient";
+  Real yVertex "Value at an interior stationary coordinate";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(x) and max(abs({a,b,c}))<Modelica.Constants.inf,"Invalid quadratic data.");
   y1 := (a*x.lo+b)*x.lo+c;
@@ -37,19 +37,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 二次函数在有界区间上的极值传播</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval x; input Real a = 1; input Real b = 0; input Real c = 0; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 二次函数在有界区间上的极值传播</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>二次函数在有界区间上的极值传播</p>
-<p><b>行为</b> 检查两个端点及区间内顶点。a=0 时退化为线性。</p>
-<p><b>最小用法</b> 平方、动压或储能计算可调用 QuadraticRange(x,1,0,0)。</p>
-<p><b>适用边界</b> 系数和自变量需有相容单位。结果使用工具的普通浮点舍入。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval x</code></li>
-<li><code>input Real a = 1</code></li>
-<li><code>input Real b = 0</code></li>
-<li><code>input Real c = 0</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval bounds</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate <code>a*x^2+b*x+c</code> at both interval endpoints. If a is nonzero and the vertex -b/(2*a) lies strictly inside the interval, include its value in the returned extrema. With a=0, endpoint evaluation gives the linear range.</p><p>Supply a finite ordered interval and finite fixed coefficients. This uses the quadratic structure to include interior extrema; the coefficients themselves are not uncertain inputs.</p></html>"));
 end QuadraticRange;

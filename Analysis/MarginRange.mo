@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Analysis;
-function MarginRange "把响应界转换为有符号裕量及全区间判定"
-  input UncertaintyLibrary.Sets.Interval response;
-  input Real limit = 1 "Same unit as response";
-  input Boolean upperLimit = true;
-  output UncertaintyLibrary.Sets.Interval margin "Positive means favorable";
-  output UncertaintyLibrary.Utilities.Types.MarginStatus status;
+function MarginRange "Signed margin interval and its supplied-bound classification"
+  input UncertaintyLibrary.Sets.Interval response "Finite ordered response interval";
+  input Real limit = 1 "Requirement bound in the same unit as response";
+  input Boolean upperLimit = true "Use an inclusive upper requirement rather than a lower requirement";
+  output UncertaintyLibrary.Sets.Interval margin "Signed margin interval, with nonnegative values satisfying the requirement";
+  output UncertaintyLibrary.Utilities.Types.MarginStatus status "Requirement classification over the supplied response interval";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(response) and abs(limit)<Modelica.Constants.inf,"Invalid response or requirement.");
   margin := if upperLimit then UncertaintyLibrary.Sets.Interval(limit-response.hi,limit-response.lo)
@@ -24,19 +24,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 把响应界转换为有符号裕量及全区间判定</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval response; input Real limit = 1 \"Same unit as response\"; input Boolean upperLimit = true; output UncertaintyLibrary.Sets.Interval margin \"Positive means favorable\"; output UncertaintyLibrary.Utilities.Types.MarginStatus status</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 把响应界转换为有符号裕量及全区间判定</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>把响应界转换为有符号裕量及全区间判定</p>
-<p><b>行为</b> 上界要求用 limit−response，下界反向。零裕量满足。跨边界时保留未决。</p>
-<p><b>最小用法</b> 只在输入响应确有外包保证时把结论解释成全区间结论。</p>
-<p><b>适用边界</b> 有限候选的最小最大值只覆盖这些候选。保证仍依赖输入区间及工程数值精度。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval response</code></li>
-<li><code>input Real limit = 1 \"Same unit as response\"</code></li>
-<li><code>input Boolean upperLimit = true</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval margin \"Positive means favorable\"</code></li>
-<li><code>output UncertaintyLibrary.Utilities.Types.MarginStatus status</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>For an upper requirement, return [limit-response.hi,limit-response.lo]; for a lower requirement, return [response.lo-limit,response.hi-limit]. Positive margins are favourable and zero satisfies the inclusive requirement.</p><p>The status is GUARANTEED when the whole supplied margin is nonnegative, VIOLATED when it is wholly negative, and UNRESOLVED otherwise. This classification applies to the input interval; it does not establish that the interval encloses an unsampled model response.</p></html>"));
 end MarginRange;

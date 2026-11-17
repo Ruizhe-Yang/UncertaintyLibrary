@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Analysis;
-function FiniteDifferenceJacobian "由多组对称扰动得到多输出局部雅可比矩阵"
-  input Real minusValues[:,:] "Rows are metrics, columns are parameters";
-  input Real plusValues[size(minusValues,1),size(minusValues,2)];
-  input Real steps[size(minusValues,2)] "Positive perturbation sizes";
-  output Real jacobian[size(minusValues,1),size(minusValues,2)];
+function FiniteDifferenceJacobian "Central response Jacobian from matched perturbation matrices"
+  input Real minusValues[:,:] "Negative-perturbation responses, with metrics by row and parameters by column";
+  input Real plusValues[size(minusValues,1),size(minusValues,2)] "Matching positive-perturbation response matrix";
+  input Real steps[size(minusValues,2)] "Finite positive perturbation for each parameter column";
+  output Real jacobian[size(minusValues,1),size(minusValues,2)] "Central derivative of each metric with respect to each parameter";
 algorithm
   for j in 1:size(steps,1) loop
     assert(steps[j]>0 and steps[j]<Modelica.Constants.inf,"A central perturbation step must be finite and positive.");
@@ -30,18 +30,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 由多组对称扰动得到多输出局部雅可比矩阵</p><p><b>Interfaces</b> input Real minusValues[:,:] \"Rows are metrics, columns are parameters\"; input Real plusValues[size(minusValues,1),size(minusValues,2)]; input Real steps[size(minusValues,2)] \"Positive perturbation sizes\"; output Real jacobian[size(minusValues,1),size(minusValues,2)]</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 由多组对称扰动得到多输出局部雅可比矩阵</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>由多组对称扰动得到多输出局部雅可比矩阵</p>
-<p><b>行为</b> 第 j 列只改变对应参数。对每个输出保存单位对应的导数近似。</p>
-<p><b>最小用法</b> 将确定性扰动仿真的配对结果汇入矩阵。</p>
-<p><b>适用边界</b> 独立坐标的局部变化应保持可行。如果受约束，应先选可行参数化坐标。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real minusValues[:,:] \"Rows are metrics, columns are parameters\"</code></li>
-<li><code>input Real plusValues[size(minusValues,1),size(minusValues,2)]</code></li>
-<li><code>input Real steps[size(minusValues,2)] \"Positive perturbation sizes\"</code></li>
-<li><code>output Real jacobian[size(minusValues,1),size(minusValues,2)]</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Use rows for response metrics and columns for perturbed parameters. For column j, compute each derivative as <code>(plusValues[i,j]-minusValues[i,j])/(2*steps[j])</code>.</p><p>Supply paired model results with only the selected parameter perturbed in each column and all other settings held consistent. Every step must be finite and positive and every observation finite. The function assembles local numerical derivatives; it does not perform the model evaluations.</p></html>"));
 end FiniteDifferenceJacobian;

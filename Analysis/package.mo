@@ -1,5 +1,5 @@
 within UncertaintyLibrary;
-package Analysis "Analysis"
+package Analysis "Response ranges, observed extrema and local sensitivity"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -19,5 +19,5 @@ package Analysis "Analysis"
         Ellipse(extent={{-3.22,25.3},{3.22,31.74}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Ellipse(extent={{36.34,-10.58},{42.78,-4.14}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Ellipse(extent={{36.34,4.14},{42.78,10.58}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5)
-      }));
+      }), Documentation(info="<html><p>Functions and blocks for finite-candidate extrema, aligned sample envelopes, local finite differences, declared requirement margins and explicit mathematical response bounds. Select the operation by its input contract and coverage assumptions.</p><p>Observed candidate extrema and local slopes do not establish continuous-domain bounds. Range formulas rely on their stated model structure or supplied derivative bounds.</p></html>"));
 end Analysis;

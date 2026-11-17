@@ -1,13 +1,13 @@
 within UncertaintyLibrary.Analysis;
-function EnvelopeAtSamples "Compute a per-sample envelope on explicitly identical time grids"
+function EnvelopeAtSamples "Observation envelope on exactly matched sample grids"
   extends Modelica.Icons.Function;
-input Real Y[:,:];
-  input Real times[:];
-  input Real grids[:,:];
-  input Boolean validMask[:,:]=fill(true,size(Y,1),size(Y,2));
-  output Real lower[size(Y,2)];
-  output Real upper[size(Y,2)];
-  output Integer nValid[size(Y,2)];
+input Real Y[:,:] "Candidate responses by row and sample by column";
+  input Real times[:] "Finite strictly increasing reference sample times";
+  input Real grids[:,:] "Per-candidate sample times, each exactly equal to times";
+  input Boolean validMask[:,:]=fill(true,size(Y,1),size(Y,2)) "Qualification of each candidate response at each sample";
+  output Real lower[size(Y,2)] "Per-sample minimum, or zero with no qualifying observation";
+  output Real upper[size(Y,2)] "Per-sample maximum, or zero with no qualifying observation";
+  output Integer nValid[size(Y,2)] "Number of qualified finite observations at each sample";
 algorithm
 
   assert(size(times,1)==size(Y,2) and size(grids,1)==size(Y,1) and size(grids,2)==size(Y,2)
@@ -49,5 +49,5 @@ algorithm
         Ellipse(extent={{29.23,-6.67},{34.41,-1.49}}, lineColor={108,88,49}, fillColor={108,88,49}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Compute a per-sample envelope on explicitly identical time grids.</p><p><b>Interfaces</b> input Real Y[:,:]; input Real times[:]; input Real grids[:,:]; input Boolean validMask[:,:]=fill(true,size(Y,1),size(Y,2)); output Real lower[size(Y,2)]; output Real upper[size(Y,2)]; output Integer nValid[size(Y,2)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Compute a per-sample envelope on explicitly identical time grids</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> A sample with zero valid candidates is unavailable. This function performs no interpolation.</p><p><b>Observables</b> lower, upper, nValid</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>Treat rows of Y as candidate trajectories and columns as samples. Require matching matrix dimensions, a finite strictly increasing reference times vector and exact equality of every grids entry to its reference time, including masked observations.</p><p>At each sample, take extrema of valid finite values and report their count. If none qualifies, both endpoints are zero and nValid is zero. No resampling or interpolation is performed; the envelope covers only the supplied candidates at their supplied sample times.</p></html>"));
 end EnvelopeAtSamples;

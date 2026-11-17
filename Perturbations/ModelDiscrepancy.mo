@@ -1,18 +1,18 @@
 within UncertaintyLibrary.Perturbations;
-block ModelDiscrepancy "Apply a bounded discrepancy coefficient to an explicit basis"
-parameter Boolean useCoordinateInput=false;
-  parameter Real xi(min=-1,max=1)=0;
-  Modelica.Blocks.Interfaces.RealInput coordinate if useCoordinateInput annotation(Placement(transformation(origin={-100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,70},extent={{-10,-10},{10,10}})));
-  parameter UncertaintyLibrary.Sets.Interval range=UncertaintyLibrary.Sets.Interval(-0.1,0.1);
-  Modelica.Blocks.Interfaces.RealInput u annotation(Placement(transformation(origin={-100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,23.33333},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealInput basis annotation(Placement(transformation(origin={-100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,-23.33333},extent={{-10,-10},{10,10}})));
-    Modelica.Blocks.Interfaces.RealOutput y annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput delta annotation(Placement(transformation(origin={100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,23.33333},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput lower annotation(Placement(transformation(origin={100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-23.33333},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput upper annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
+block ModelDiscrepancy "Selected discrepancy coefficient applied to an explicit basis"
+parameter Boolean useCoordinateInput=false "Use the external signed coordinate instead of xi";
+  parameter Real xi(min=-1,max=1)=0 "Fixed signed coordinate in [-1,1]";
+  Modelica.Blocks.Interfaces.RealInput coordinate if useCoordinateInput  "External signed coordinate in [-1,1]" annotation(Placement(transformation(origin={-100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,70},extent={{-10,-10},{10,10}})));
+  parameter UncertaintyLibrary.Sets.Interval range=UncertaintyLibrary.Sets.Interval(-0.1,0.1) "Admissible discrepancy-coefficient interval";
+  Modelica.Blocks.Interfaces.RealInput u  "Nominal model signal" annotation(Placement(transformation(origin={-100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,23.33333},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealInput basis  "Explicit basis multiplied by the discrepancy coefficient" annotation(Placement(transformation(origin={-100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,-23.33333},extent={{-10,-10},{10,10}})));
+    Modelica.Blocks.Interfaces.RealOutput y  "Nominal signal plus the selected discrepancy" annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput delta  "Selected discrepancy coefficient" annotation(Placement(transformation(origin={100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,23.33333},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput lower  "Lower output value over the coefficient interval" annotation(Placement(transformation(origin={100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-23.33333},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput upper  "Upper output value over the coefficient interval" annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
 
 protected
-  Modelica.Blocks.Interfaces.RealInput x annotation(Placement(transformation(origin={-100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,-70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealInput x  "Selected internal signed coordinate" annotation(Placement(transformation(origin={-100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={-100,-70},extent={{-10,-10},{10,10}})));
 
 equation
   connect(coordinate,x);
@@ -36,5 +36,5 @@ equation
         Line(points={{31,61},{31,85}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Apply a bounded discrepancy coefficient to an explicit basis.</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.RealInput coordinate if useCoordinateInput; Modelica.Blocks.Interfaces.RealInput u; Modelica.Blocks.Interfaces.RealInput basis; Modelica.Blocks.Interfaces.RealOutput y; Modelica.Blocks.Interfaces.RealOutput delta; Modelica.Blocks.Interfaces.RealOutput lower; Modelica.Blocks.Interfaces.RealOutput upper</p><p><b>Parameters</b> parameter Boolean useCoordinateInput=false; parameter Real xi(min=-1,max=1)=0; parameter UncertaintyLibrary.Sets.Interval range=UncertaintyLibrary.Sets.Interval(-0.1,0.1)</p><p><b>Behavior</b> Apply a bounded discrepancy coefficient to an explicit basis</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> The optional coordinate is a deterministic input. Bounds are ordered for both signs of the multiplier.</p><p><b>Observables</b> y, delta, lower, upper</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.BoundedMeasurement\">UncertaintyLibrary.Examples.BoundedMeasurement</a></p></html>"));
+    Documentation(info="<html><p>Select coefficient delta from range and apply <code>y=u+basis*delta</code>. Evaluate both coefficient endpoints and reorder their output values for the current signed basis.</p><p>Choose compatible units so basis times delta has the same unit as u. The basis is supplied by the application; the block does not identify a discrepancy model from data.</p></html>"));
 end ModelDiscrepancy;

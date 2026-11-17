@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Sets;
-function Midpoint "Evaluate a stable midpoint"
+function Midpoint "Weighted midpoint of a closed interval"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  output Real value;
+input UncertaintyLibrary.Sets.Interval a "Finite ordered interval";
+  output Real value "Arithmetic midpoint in the interval unit";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   value:=0.5*a.lo+0.5*a.hi;
@@ -18,5 +18,5 @@ algorithm
         Text(extent={{-25.9,-25.54},{25.9,-46.26}}, textString="mid", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Evaluate a stable midpoint.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; output Real value</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Evaluate a stable midpoint</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> value</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return <code>0.5*a.lo+0.5*a.hi</code> after checking a. Halving each endpoint before addition avoids forming the full endpoint sum.</p><p>Call <code>Midpoint(a)</code>; the returned value uses the interval's physical unit.</p></html>"));
 end Midpoint;

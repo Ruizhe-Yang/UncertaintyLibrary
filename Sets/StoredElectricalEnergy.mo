@@ -1,13 +1,13 @@
 within UncertaintyLibrary.Sets;
-function StoredElectricalEnergy "给出电容与电感联合初始储能范围"
-  input UncertaintyLibrary.Sets.Interval capacitance "F";
-  input UncertaintyLibrary.Sets.Interval voltage "V, signed";
-  input UncertaintyLibrary.Sets.Interval inductance "H";
-  input UncertaintyLibrary.Sets.Interval current "A, signed";
-  output UncertaintyLibrary.Sets.Interval energy "J";
+function StoredElectricalEnergy "Combined capacitive and inductive energy bounds"
+  input UncertaintyLibrary.Sets.Interval capacitance "Nonnegative capacitance interval in farads";
+  input UncertaintyLibrary.Sets.Interval voltage "Signed voltage interval in volts";
+  input UncertaintyLibrary.Sets.Interval inductance "Nonnegative inductance interval in henries";
+  input UncertaintyLibrary.Sets.Interval current "Signed current interval in amperes";
+  output UncertaintyLibrary.Sets.Interval energy "Combined electrical-energy interval in joules";
 protected
-  UncertaintyLibrary.Sets.Interval ec;
-  UncertaintyLibrary.Sets.Interval el;
+  UncertaintyLibrary.Sets.Interval ec "Interval for capacitance multiplied by squared voltage";
+  UncertaintyLibrary.Sets.Interval el "Interval for inductance multiplied by squared current";
 algorithm
   assert(capacitance.lo>=0 and inductance.lo>=0,"Energy storage coefficients must be nonnegative.");
   ec := UncertaintyLibrary.Sets.Multiply(capacitance,UncertaintyLibrary.Analysis.QuadraticRange(voltage,1,0,0));
@@ -30,19 +30,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 给出电容与电感联合初始储能范围</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval capacitance \"F\"; input UncertaintyLibrary.Sets.Interval voltage \"V, signed\"; input UncertaintyLibrary.Sets.Interval inductance \"H\"; input UncertaintyLibrary.Sets.Interval current \"A, signed\"; output UncertaintyLibrary.Sets.Interval energy \"J\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 给出电容与电感联合初始储能范围</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p>
-<p>给出电容与电感联合初始储能范围</p>
-<p><b>行为</b> 按 CV²/2 与 LI²/2 计算。电压或电流区间跨零时平方的最小值为零。</p>
-<p><b>最小用法</b> 用于指定电容电感初态下的储能边界。</p>
-<p><b>适用边界</b> 各区间按笛卡尔盒组合。已知相关约束可在候选层筛选。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval capacitance \"F\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval voltage \"V, signed\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval inductance \"H\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval current \"A, signed\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval energy \"J\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate <code>0.5*C*V^2+0.5*L*I^2</code> using nonnegative capacitance and inductance ranges. QuadraticRange computes each square, including its zero minimum when the signed voltage or current interval contains zero.</p><p>Supply farads, volts, henries and amperes; the result is in joules. Coefficient and state intervals are combined as a Cartesian product. The function returns data and does not initialise electrical components.</p></html>"));
 end StoredElectricalEnergy;

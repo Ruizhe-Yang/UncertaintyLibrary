@@ -1,5 +1,5 @@
 within UncertaintyLibrary;
-package Perturbations "Perturbations"
+package Perturbations "Deterministic signal perturbations and measurement intervals"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -12,5 +12,6 @@ package Perturbations "Perturbations"
         Line(points={{-47.84,50.6},{47.84,50.6}}, color={108,88,49}, thickness=1.2, pattern=LinePattern.Solid),
         Line(points={{-47.84,39.56},{-47.84,61.64}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid),
         Line(points={{47.84,39.56},{47.84,61.64}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid)
-      }));
+      }),
+    Documentation(info="<html><p>Apply selected additive, gain, calibration or basis-scaled discrepancies, or reconstruct compatible measurement intervals. Signal blocks expose selected values and, where declared, pointwise bounds.</p><p>Signed coordinate blocks use [-1,1]; BoundedParameterTrace uses [0,1] with a validity output and midpoint fallback. These relations specify deterministic values and ranges without random sampling or probability distributions.</p></html>"));
 end Perturbations;

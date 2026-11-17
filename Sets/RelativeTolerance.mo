@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function RelativeTolerance "Construct a symmetric interval from a finite center and a nonnegative tolerance"
+function RelativeTolerance "Symmetric interval scaled by the nominal magnitude"
   extends Modelica.Icons.Function;
-input Real center;
-  input Real relative(min=0);
-  output UncertaintyLibrary.Sets.Interval bounds;
+input Real center "Signed nominal value";
+  input Real relative(min=0) "Nonnegative fraction of the nominal magnitude";
+  output UncertaintyLibrary.Sets.Interval bounds "Closed interval defined by the relative tolerance";
 algorithm
   assert(relative>=0,"Negative tolerance.");
   bounds:=UncertaintyLibrary.Sets.Interval(center-(abs(center)*relative),center+(abs(center)*relative));
@@ -20,5 +20,5 @@ algorithm
         Text(extent={{-25.16,-27.02},{25.16,-49.22}}, textString="|x|", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Construct a symmetric interval from a finite center and a nonnegative tolerance.</p><p><b>Interfaces</b> input Real center; input Real relative(min=0); output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Construct a symmetric interval from a finite center and a nonnegative tolerance</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return <code>center ± abs(center)*relative</code>. The nonnegative fraction is dimensionless, so negative centres retain correctly ordered endpoints.</p><p>Call <code>RelativeTolerance(center,relative)</code>. A zero centre gives the singleton [0,0], irrespective of the finite fraction; use an absolute allowance when a nonzero width is needed there.</p></html>"));
 end RelativeTolerance;

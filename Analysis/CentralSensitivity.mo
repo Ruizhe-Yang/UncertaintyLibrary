@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Analysis;
-function CentralSensitivity "由三点结果估计中心灵敏度和曲率"
-  input Real minusValue;
-  input Real centerValue;
-  input Real plusValue;
-  input Real step = 0.1 "Positive perturbation in the parameter unit";
-  output Real slope "Metric unit / parameter unit";
-  output Real curvature "Metric unit / parameter unit squared";
+function CentralSensitivity "Central slope and curvature from three matched responses"
+  input Real minusValue "Response at the negative parameter perturbation";
+  input Real centerValue "Response at the nominal parameter";
+  input Real plusValue "Response at the positive parameter perturbation";
+  input Real step = 0.1 "Finite positive perturbation in the parameter unit";
+  output Real slope "Central slope in response unit per parameter unit";
+  output Real curvature "Central curvature in response unit per squared parameter unit";
 algorithm
   assert(step>0 and step<Modelica.Constants.inf and max(abs({minusValue,centerValue,plusValue}))<Modelica.Constants.inf,
     "Finite central observations and a positive step are required.");
@@ -26,20 +26,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 由三点结果估计中心灵敏度和曲率</p><p><b>Interfaces</b> input Real minusValue; input Real centerValue; input Real plusValue; input Real step = 0.1 \"Positive perturbation in the parameter unit\"; output Real slope \"Metric unit / parameter unit\"; output Real curvature \"Metric unit / parameter unit squared\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 由三点结果估计中心灵敏度和曲率</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>由三点结果估计中心灵敏度和曲率</p>
-<p><b>行为</b> 用对称两侧差分及中心二阶差分。</p>
-<p><b>最小用法</b> 同一宿主分别在参数 x−h、x、x+h 计算同一指标。</p>
-<p><b>适用边界</b> 为局部近似。时间窗、初始化与工况应一致，步长过小会放大数值误差。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real minusValue</code></li>
-<li><code>input Real centerValue</code></li>
-<li><code>input Real plusValue</code></li>
-<li><code>input Real step = 0.1 \"Positive perturbation in the parameter unit\"</code></li>
-<li><code>output Real slope \"Metric unit / parameter unit\"</code></li>
-<li><code>output Real curvature \"Metric unit / parameter unit squared\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">MechanicalInertiaInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Use observations at a nominal parameter and symmetric perturbations of magnitude step. Return slope=(plusValue-minusValue)/(2*step) and the central second-difference curvature.</p><p>Keep other parameters, initial conditions and response definitions consistent between observations. Values and step must be finite, with step positive. The function estimates local derivatives; it does not run the model or establish derivative bounds over a region.</p></html>"));
 end CentralSensitivity;

@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Analysis;
-function SafetyMargin "Signed distance from a worst observed value to a bound"
+function SafetyMargin "Signed requirement margin from observed extrema"
   extends Modelica.Icons.Function;
-input Real worstMin;
-  input Real worstMax;
-  input Real limit;
-  input UncertaintyLibrary.Utilities.Types.Sense sense=UncertaintyLibrary.Utilities.Types.Sense.Upper;
-  output Real margin;
+input Real worstMin "Smallest supplied response value";
+  input Real worstMax "Largest supplied response value";
+  input Real limit "Requirement bound in the response unit";
+  input UncertaintyLibrary.Utilities.Types.Sense sense=UncertaintyLibrary.Utilities.Types.Sense.Upper "Upper or lower requirement orientation";
+  output Real margin "Signed distance from the relevant extremum to the requirement bound";
 algorithm
   assert(worstMin<=worstMax,"Unordered observed extrema.");
   margin:=if sense==UncertaintyLibrary.Utilities.Types.Sense.Upper then limit-worstMax else worstMin-limit;
@@ -20,5 +20,5 @@ algorithm
         Text(extent={{0,35.14},{28.86,14.42}}, textString="m", textColor={75,138,73}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Signed distance from a worst observed value to a bound.</p><p><b>Interfaces</b> input Real worstMin; input Real worstMax; input Real limit; input UncertaintyLibrary.Utilities.Types.Sense sense=UncertaintyLibrary.Utilities.Types.Sense.Upper; output Real margin</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Signed distance from a worst observed value to a bound</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> margin</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>For Sense.Upper, return limit-worstMax; for Sense.Lower, return worstMin-limit. A positive margin is favourable and zero lies on the requirement boundary. The supplied extrema must be ordered.</p><p>Supply finite extrema and a limit in the same unit. The result inherits the coverage of those extrema; an observed margin does not establish coverage of an unsampled domain.</p></html>"));
 end SafetyMargin;

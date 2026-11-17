@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="-115 -115 230 230" role="img" aria-labelledby="title"><title id="title">Interval: original Modelica icon</title><rect x="-100" y="-100" width="200" height="200" rx="0" fill="rgb(255,215,136)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-100,-48 100,-48" fill="none" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-45.76,5 45.76,5" fill="none" stroke="rgb(108,88,49)" stroke-width="3.36" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-45.76,15.56 -45.76,-5.56" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="45.76,15.56 45.76,-5.56" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="-32.56" y="34.92" font-family="Arial,DejaVu Sans,sans-serif" font-size="19.2192" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">lo</text>
+<text x="32.56" y="34.92" font-family="Arial,DejaVu Sans,sans-serif" font-size="19.2192" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">hi</text>
+<text x="0" y="-66" font-family="Arial,DejaVu Sans,sans-serif" font-size="21.84" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">[lo, hi]</text></svg>

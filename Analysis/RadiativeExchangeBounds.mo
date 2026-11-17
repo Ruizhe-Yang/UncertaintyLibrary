@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Analysis;
-function RadiativeExchangeBounds "计算有效辐射面积和温度区间的净交换热流"
-  input UncertaintyLibrary.Sets.Interval emitter "K";
-  input UncertaintyLibrary.Sets.Interval receiver "K";
-  input UncertaintyLibrary.Sets.Interval effectiveArea "m2 including gray-body factors";
-  output UncertaintyLibrary.Sets.Interval heatFlow "W, positive from emitter to receiver";
+function RadiativeExchangeBounds "Net radiative heat-flow interval between two temperature bands"
+  input UncertaintyLibrary.Sets.Interval emitter "Positive emitter absolute-temperature interval in kelvin";
+  input UncertaintyLibrary.Sets.Interval receiver "Positive receiver absolute-temperature interval in kelvin";
+  input UncertaintyLibrary.Sets.Interval effectiveArea "Nonnegative area interval in square metres including grey-body factors";
+  output UncertaintyLibrary.Sets.Interval heatFlow "Net heat-flow interval in watts, positive from emitter to receiver";
 protected
-  UncertaintyLibrary.Sets.Interval difference;
-  UncertaintyLibrary.Sets.Interval scaled;
+  UncertaintyLibrary.Sets.Interval difference "Interval of emitter temperature to the fourth power minus receiver temperature to the fourth power";
+  UncertaintyLibrary.Sets.Interval scaled "Temperature-power difference multiplied by effective area";
 algorithm
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(emitter) and UncertaintyLibrary.Utilities.Internal.validInterval(receiver) and min(emitter.lo,receiver.lo)>0 and effectiveArea.lo>=0,
     "Radiation uses positive absolute temperatures and nonnegative area.");
@@ -28,18 +28,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 计算有效辐射面积和温度区间的净交换热流</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval emitter \"K\"; input UncertaintyLibrary.Sets.Interval receiver \"K\"; input UncertaintyLibrary.Sets.Interval effectiveArea \"m2 including gray-body factors\"; output UncertaintyLibrary.Sets.Interval heatFlow \"W, positive from emitter to receiver\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 计算有效辐射面积和温度区间的净交换热流</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>计算有效辐射面积和温度区间的净交换热流</p>
-<p><b>行为</b> 独立绝对温度端点传播四次方差，热流可变号。</p>
-<p><b>最小用法</b> 用于配置简化辐射热边界的范围。</p>
-<p><b>适用边界</b> 假定灰体有效面积表示几何与发射率。系统辐射网络留在宿主。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval emitter \"K\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval receiver \"K\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval effectiveArea \"m2 including gray-body factors\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval heatFlow \"W, positive from emitter to receiver\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ThermalCapacityInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate the interval relation <code>sigma*effectiveArea*(emitter^4-receiver^4)</code>. Both temperature intervals are strictly positive in kelvin; effectiveArea is nonnegative and includes the applicable grey-body and geometric factors.</p><p>Positive heat flow is from emitter to receiver, while a hotter receiver can produce a negative interval. Temperature and area combinations are treated independently. The function provides a static relation, with no heat ports or thermal storage.</p></html>"));
 end RadiativeExchangeBounds;

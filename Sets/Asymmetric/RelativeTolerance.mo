@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets.Asymmetric;
-function RelativeTolerance "按名义值幅值定义非对称比例公差"
-  input Real nominal = 100;
-  input Real lowerFraction = 0.05 "Nonnegative relative tolerance";
-  input Real upperFraction = 0.05 "Nonnegative relative tolerance";
-  output UncertaintyLibrary.Sets.Interval bounds;
+function RelativeTolerance "Interval from separate fractions of the nominal magnitude"
+  input Real nominal = 100 "Signed nominal value";
+  input Real lowerFraction = 0.05 "Nonnegative fraction of nominal magnitude for the lower allowance";
+  input Real upperFraction = 0.05 "Nonnegative fraction of nominal magnitude for the upper allowance";
+  output UncertaintyLibrary.Sets.Interval bounds "Closed interval with the two relative allowances";
 algorithm
   assert(lowerFraction>=0 and upperFraction>=0,"Tolerance fractions must be nonnegative.");
   bounds := UncertaintyLibrary.Sets.Interval(nominal-abs(nominal)*lowerFraction,nominal+abs(nominal)*upperFraction);
@@ -22,18 +22,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 按名义值幅值定义非对称比例公差</p><p><b>Interfaces</b> input Real nominal = 100; input Real lowerFraction = 0.05 \"Nonnegative relative tolerance\"; input Real upperFraction = 0.05 \"Nonnegative relative tolerance\"; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 按名义值幅值定义非对称比例公差</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p>
-<p>按名义值幅值定义非对称比例公差</p>
-<p><b>行为</b> 使用 abs(nominal) 保持负名义值的上下界方向。名义值为零时区间退化。</p>
-<p><b>最小用法</b> 以 0.05 表示 5% 制造容差，可在参数阶段求值。</p>
-<p><b>适用边界</b> 仅表达幅值比例公差。零名义量的绝对误差另行给出。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real nominal = 100</code></li>
-<li><code>input Real lowerFraction = 0.05 \"Nonnegative relative tolerance\"</code></li>
-<li><code>input Real upperFraction = 0.05 \"Nonnegative relative tolerance\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval bounds</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Subtract <code>abs(nominal)*lowerFraction</code> from the nominal value and add <code>abs(nominal)*upperFraction</code>. Both dimensionless fractions must be nonnegative.</p><p>The signed nominal value sets the centre reference, while its magnitude sets each allowance. At nominal=0 the interval has zero width.</p></html>"));
 end RelativeTolerance;

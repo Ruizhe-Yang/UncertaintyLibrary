@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Utilities.Views;
-block SensitivityView "Display central slope and normalized sensitivity"
-parameter Real center=2;
-  parameter Real step=0.001;
-  parameter Real responseNominal=4;
-    Modelica.Blocks.Interfaces.RealOutput slope annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput normalized annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.BooleanOutput available annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
+block SensitivityView "Display central slope and normalised local sensitivity"
+parameter Real center=2 "Nominal parameter at the centre of the perturbations";
+  parameter Real step=0.001 "Positive symmetric perturbation magnitude";
+  parameter Real responseNominal=4 "Nominal response used for normalisation";
+    Modelica.Blocks.Interfaces.RealOutput slope  "Central finite-difference slope of the squared response" annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput normalized  "Normalised local sensitivity or zero when unavailable" annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.BooleanOutput available  "Nominal-response magnitude meets the normalisation threshold" annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
 equation
   slope=UncertaintyLibrary.Analysis.FiniteDifference((center-step)^2,(center+step)^2,step);
   (normalized,available)=UncertaintyLibrary.Analysis.NormalizedSensitivity(center,responseNominal,slope);
@@ -23,5 +23,5 @@ equation
         Text(extent={{39,83},{72,59}}, textString="S*", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Display central slope and normalized sensitivity.</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.RealOutput slope; Modelica.Blocks.Interfaces.RealOutput normalized; Modelica.Blocks.Interfaces.BooleanOutput available</p><p><b>Parameters</b> parameter Real center=2; parameter Real step=0.001; parameter Real responseNominal=4</p><p><b>Behavior</b> Display central slope and normalized sensitivity</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> slope, normalized, available</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>Evaluate the squared response at <code>center-step</code> and <code>center+step</code>, form the central finite difference and normalise it using the supplied nominal parameter and response.</p><p>The defaults give slope 4 and normalised sensitivity 2. Keep <code>responseNominal</code> consistent with the intended reference response when changing the centre; it is an independent parameter. Read <code>available</code> with the normalised result.</p></html>"));
 end SensitivityView;

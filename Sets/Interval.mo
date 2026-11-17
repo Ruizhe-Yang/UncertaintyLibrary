@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Sets;
-record Interval "Ordered closed interval with caller-owned units"
+record Interval "Closed interval endpoints with application-defined units"
   extends Modelica.Icons.Record;
-Real lo=0 "Inclusive lower endpoint";
-Real hi=0 "Inclusive upper endpoint";
+Real lo=0 "Inclusive lower endpoint in the application unit";
+Real hi=0 "Inclusive upper endpoint in the application unit";
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
         Rectangle(extent={{-100,-100},{100,100}}, lineColor={108,88,49}, fillColor={255,215,136}, fillPattern=FillPattern.Solid, pattern=LinePattern.Solid, lineThickness=0.5, radius=0),
@@ -15,5 +15,5 @@ Real hi=0 "Inclusive upper endpoint";
         Text(extent={{-70,80},{70,52}}, textString="[lo, hi]", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Ordered closed interval with caller-owned units.</p><p><b>Interfaces</b> The declared record fields or function arguments form the interface.</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Ordered closed interval with caller-owned units</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Consumers reject reversed or non-finite bounds. A zero-width interval is valid.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Store inclusive endpoints <code>lo</code> and <code>hi</code>. Equal endpoints describe a singleton. The record stores data only; its constructor does not enforce ordering or finiteness.</p><p>Use <code>Utilities.Functions.Valid</code> to check an interval before a calculation that requires finite ordered endpoints. Assign the same physical unit to both endpoints through the application; the record carries no probability or empty-set marker.</p></html>"));
 end Interval;

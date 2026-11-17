@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Utilities.Functions;
-function Valid "Check finite and ordered endpoints"
+function Valid "Check finite ordered interval endpoints"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval x;
-  output Boolean valid;
+input UncertaintyLibrary.Sets.Interval x "Interval to be checked";
+  output Boolean valid "True for finite endpoints in nondecreasing order";
 algorithm
   valid := abs(x.lo)<Modelica.Constants.inf and abs(x.hi)<Modelica.Constants.inf and x.lo<=x.hi;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
@@ -15,5 +15,5 @@ algorithm
         Line(points={{-12.95,7.76},{-3.108,-2.6},{16.058,22.264}}, color={75,138,73}, thickness=1.5, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Check finite and ordered endpoints.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval x; output Boolean valid</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Check finite and ordered endpoints</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> valid</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p></html>"));
+    Documentation(info="<html><p>Return true when both endpoint magnitudes are below infinity and <code>x.lo &lt;= x.hi</code>. A singleton interval is valid.</p><p>The function reports a Boolean result without changing the interval. It does not check physical units or application-specific limits.</p></html>"));
 end Valid;

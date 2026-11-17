@@ -1,16 +1,16 @@
 within UncertaintyLibrary.Constraints;
-function FilterCandidates "Select feasible rows without resizing the result arrays"
+function FilterCandidates "Candidate feasibility mask and retained original row indices"
   extends Modelica.Icons.Function;
-input Real candidates[:,:];
-  input UncertaintyLibrary.Sets.Interval box[size(candidates,2)];
-  input Real A[:,size(candidates,2)]=fill(0,0,size(candidates,2));
-  input Real b[size(A,1)]=fill(0,size(A,1));
-  input Real rowTolerance[size(A,1)]=fill(0,size(A,1));
+input Real candidates[:,:] "Candidate points, one per row";
+  input UncertaintyLibrary.Sets.Interval box[size(candidates,2)] "Closed interval for each candidate coordinate";
+  input Real A[:,size(candidates,2)]=fill(0,0,size(candidates,2)) "Optional matrix of linear upper inequalities";
+  input Real b[size(A,1)]=fill(0,size(A,1)) "Upper bound for each linear constraint row";
+  input Real rowTolerance[size(A,1)]=fill(0,size(A,1)) "Nonnegative allowance in the unit of each linear constraint row";
 
-  output Boolean acceptedMask[size(candidates,1)];
-  output Integer acceptedIndices[size(candidates,1)];
-  output Integer nAccepted;
-  output Boolean available;
+  output Boolean acceptedMask[size(candidates,1)] "Feasibility flag in original candidate-row order";
+  output Integer acceptedIndices[size(candidates,1)] "Accepted one-based row indices followed by zero padding";
+  output Integer nAccepted "Number of accepted candidate rows";
+  output Boolean available "True when at least one candidate is accepted";
 algorithm
 
   acceptedIndices:=fill(0,size(candidates,1));
@@ -34,5 +34,5 @@ algorithm
         Line(points={{-22.2,-15.92},{22.2,-4.82}}, color={128,128,128}, thickness=0.7, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Select feasible rows without resizing the result arrays.</p><p><b>Interfaces</b> input Real candidates[:,:]; input UncertaintyLibrary.Sets.Interval box[size(candidates,2)]; input Real A[:,size(candidates,2)]=fill(0,0,size(candidates,2)); input Real b[size(A,1)]=fill(0,size(A,1)); input Real rowTolerance[size(A,1)]=fill(0,size(A,1)); output Boolean acceptedMask[size(candidates,1)]; output Integer acceptedIndices[size(candidates,1)]; output Integer nAccepted; output Boolean available</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Select feasible rows without resizing the result arrays</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Unused indices are zero. The empty accepted set is a valid output state.</p><p><b>Observables</b> acceptedMask, acceptedIndices, nAccepted, available</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates\">UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates</a></p></html>"));
+    Documentation(info="<html><p>Call <code>FilterCandidates(candidates,box,A,b,rowTolerance)</code> to test each candidate row against the closed box and all linear upper inequalities. The optional empty constraint matrix applies only the box test.</p><p><code>acceptedMask</code> retains the candidate-row order. The leading <code>nAccepted</code> entries of <code>acceptedIndices</code> contain the accepted one-based row numbers; the remainder is zero. <code>available</code> is true when at least one row is accepted. No candidate matrix is resized or returned.</p></html>"));
 end FilterCandidates;

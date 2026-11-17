@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Sets;
-function Multiply "Range of the four endpoint products"
+function Multiply "Product range from all four endpoint combinations"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input UncertaintyLibrary.Sets.Interval b;
-  output UncertaintyLibrary.Sets.Interval bounds;
+input UncertaintyLibrary.Sets.Interval a "First finite ordered interval";
+  input UncertaintyLibrary.Sets.Interval b "Second finite ordered interval";
+  output UncertaintyLibrary.Sets.Interval bounds "Minimum and maximum of the four endpoint products";
 protected
-  Real products[4];
+  Real products[4] "All combinations of one endpoint from each interval";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   assert(UncertaintyLibrary.Utilities.Functions.Valid(b),"Invalid closed interval b.");
@@ -26,5 +26,5 @@ algorithm
         Line(points={{-7.4,-2.6},{7.4,-17.4}}, color={108,88,49}, thickness=1.3, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Range of the four endpoint products.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input UncertaintyLibrary.Sets.Interval b; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Range of the four endpoint products</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Evaluate all four products of the endpoints of a and b, then return their minimum and maximum. Both input intervals and the resulting bounds must be finite and ordered.</p><p>Call <code>Multiply(a,b)</code>. The two inputs represent a Cartesian product. For the square of one dependent quantity, use <code>Analysis.QuadraticRange(a,1,0,0)</code> to retain that dependence.</p></html>"));
 end Multiply;

@@ -1,5 +1,5 @@
 within UncertaintyLibrary;
-package UsersGuide "UsersGuide"
+package UsersGuide "User's guide"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -9,5 +9,5 @@ package UsersGuide "UsersGuide"
         Line(points={{7.36,18.4},{39.56,24.84}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid),
         Line(points={{-46.92,3.68},{-16.56,-2.76}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid),
         Line(points={{7.36,-2.76},{39.56,3.68}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid)
-      }));
+      }), Documentation(info="<html><p>Start with GettingStarted, use Conventions for units and result interpretation, and consult Limitations for coverage and known interface constraints.</p></html>"));
 end UsersGuide;

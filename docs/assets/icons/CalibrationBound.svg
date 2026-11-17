@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="-115 -115 230 230" role="img" aria-labelledby="title"><title id="title">CalibrationBound: original Modelica icon</title><rect x="-90" y="-85" width="180" height="170" rx="0" fill="rgb(255,255,255)" stroke="rgb(64,64,64)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60,-27 -60,27 -9,-0 -60,-27" fill="rgb(255,255,255)" stroke="rgb(0,0,127)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="-37.5" y="-0" font-family="Arial,DejaVu Sans,sans-serif" font-size="26.52" text-anchor="middle" dominant-baseline="central" fill="rgb(0,0,127)">k</text>
+<polyline points="-8,-0 7,-0" fill="none" stroke="rgb(0,0,127)" stroke-width="2.24" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="32" cy="0" rx="23" ry="23" fill="rgb(255,255,255)" stroke="rgb(64,64,64)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="32" y="-0" font-family="Arial,DejaVu Sans,sans-serif" font-size="28.08" text-anchor="middle" dominant-baseline="central" fill="rgb(0,0,127)">+</text>
+<polyline points="55,-0 68,-0" fill="none" stroke="rgb(0,0,127)" stroke-width="2.24" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="68,-0 60,3 60,-3" fill="rgb(0,0,127)" stroke="rgb(0,0,127)"/>
+<polyline points="-52,-55 52,-55" fill="none" stroke="rgb(108,88,49)" stroke-width="3.36" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-52,-43 -52,-67" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="52,-43 52,-67" fill="none" stroke="rgb(108,88,49)" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/></svg>

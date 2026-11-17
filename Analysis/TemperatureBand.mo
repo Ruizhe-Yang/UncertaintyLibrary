@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Analysis;
-block TemperatureBand "在名义温度轨迹周围给出确定性环境边界"
-  parameter UncertaintyLibrary.Sets.Interval offset = UncertaintyLibrary.Sets.Interval(-2,3) "Temperature difference interval in K";
-  Modelica.Blocks.Interfaces.RealInput nominal(unit="K") annotation(Placement(transformation(extent={{-106,-6},{-94,6}}), iconTransformation(extent={{-106,-6},{-94,6}})));
-  Modelica.Blocks.Interfaces.RealOutput lower(unit="K") annotation(Placement(transformation(extent={{94,42},{106,54}}), iconTransformation(extent={{94,42},{106,54}})));
-  Modelica.Blocks.Interfaces.RealOutput upper(unit="K") annotation(Placement(transformation(extent={{94,-6},{106,6}}), iconTransformation(extent={{94,-6},{106,6}})));
-  Modelica.Blocks.Interfaces.BooleanOutput valid annotation(Placement(transformation(extent={{94,-54},{106,-42}}), iconTransformation(extent={{94,-54},{106,-42}})));
+block TemperatureBand "Deterministic temperature-offset band with validity output"
+  parameter UncertaintyLibrary.Sets.Interval offset = UncertaintyLibrary.Sets.Interval(-2,3) "Temperature-difference interval in kelvin";
+  Modelica.Blocks.Interfaces.RealInput nominal(unit="K")  "Nominal absolute temperature" annotation(Placement(transformation(extent={{-106,-6},{-94,6}}), iconTransformation(extent={{-106,-6},{-94,6}})));
+  Modelica.Blocks.Interfaces.RealOutput lower(unit="K")  "Lower absolute-temperature bound, or zero when invalid" annotation(Placement(transformation(extent={{94,42},{106,54}}), iconTransformation(extent={{94,42},{106,54}})));
+  Modelica.Blocks.Interfaces.RealOutput upper(unit="K")  "Upper absolute-temperature bound, or zero when invalid" annotation(Placement(transformation(extent={{94,-6},{106,6}}), iconTransformation(extent={{94,-6},{106,6}})));
+  Modelica.Blocks.Interfaces.BooleanOutput valid  "The offset band has positive and finite absolute-temperature endpoints" annotation(Placement(transformation(extent={{94,-54},{106,-42}}), iconTransformation(extent={{94,-54},{106,-42}})));
 initial equation
   assert(UncertaintyLibrary.Utilities.Internal.validInterval(offset),"Invalid temperature offset.");
 equation
@@ -24,22 +24,5 @@ equation
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 在名义温度轨迹周围给出确定性环境边界</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.RealInput nominal(unit=\"K\"); Modelica.Blocks.Interfaces.RealOutput lower(unit=\"K\"); Modelica.Blocks.Interfaces.RealOutput upper(unit=\"K\"); Modelica.Blocks.Interfaces.BooleanOutput valid</p><p><b>Parameters</b> parameter UncertaintyLibrary.Sets.Interval offset = UncertaintyLibrary.Sets.Interval(-2,3) \"Temperature difference interval in K\"</p><p><b>Behavior</b> 在名义温度轨迹周围给出确定性环境边界</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>在名义温度轨迹周围给出确定性环境边界</p>
-<p><b>行为</b> 偏置区间整体随名义环境变化。低于绝对零度的下界被标为无效。</p>
-<p><b>最小用法</b> 将正常环境温度接 nominal，端点可作为确定性边界构型输入。</p>
-<p><b>适用边界</b> 独立温度区间随时间给出包络，未定义跨时刻取值的动态变化率。</p>
-<p>参数的类型、默认值和取值见下列声明。</p>
-<ul>
-<li><code>UncertaintyLibrary.Sets.Interval offset = UncertaintyLibrary.Sets.Interval(-2,3) \"Temperature difference interval in K\"</code></li>
-</ul>
-<p>接口及方向</p>
-<ul>
-<li><code>Modelica.Blocks.Interfaces.RealInput nominal(unit=\"K\")</code></li>
-<li><code>Modelica.Blocks.Interfaces.RealOutput lower(unit=\"K\")</code></li>
-<li><code>Modelica.Blocks.Interfaces.RealOutput upper(unit=\"K\")</code></li>
-<li><code>Modelica.Blocks.Interfaces.BooleanOutput valid</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ThermalCapacityInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Add the lower and upper offset endpoints to nominal. A band is valid only when its lower absolute temperature is positive and its upper endpoint is finite. An invalid band returns lower=0 and upper=0 with valid=false.</p><p>Use nominal in kelvin and offset as temperature differences in kelvin. These are instantaneous signal bounds; the block has no heat port, thermal dynamics or probability interpretation.</p></html>"));
 end TemperatureBand;

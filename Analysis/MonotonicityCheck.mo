@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Analysis;
-function MonotonicityCheck "Classify only the observed sequence order"
+function MonotonicityCheck "Classification of the supplied sample order"
   extends Modelica.Icons.Function;
-input Real samples[:];
-  output UncertaintyLibrary.Utilities.Types.SampleOrder state;
+input Real samples[:] "Finite response observations in the intended coordinate order";
+  output UncertaintyLibrary.Utilities.Types.SampleOrder state "Order classification of the supplied sequence";
 protected
-  Boolean up;
-  Boolean down;
+  Boolean up "All checked consecutive entries are nondecreasing";
+  Boolean down "All checked consecutive entries are nonincreasing";
 algorithm
 
   up:=true; down:=true;
@@ -29,5 +29,5 @@ algorithm
         Text(extent={{-39.96,47.72},{45.14,29.22}}, textString="order", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Classify only the observed sequence order.</p><p><b>Interfaces</b> input Real samples[:]; output UncertaintyLibrary.Utilities.Types.SampleOrder state</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Classify only the observed sequence order</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Order at sampled points establishes no property of unsampled points.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p></html>"));
+    Documentation(info="<html><p>Compare consecutive entries without sorting. Return Constant for an equal sequence, Nondecreasing or Nonincreasing for the corresponding weak order, and Nonmonotone otherwise. Fewer than two entries gives Undetermined.</p><p>Supply finite observations in the intended coordinate order. Finiteness is not checked internally. The result describes only this sequence and does not prove monotonicity between samples.</p></html>"));
 end MonotonicityCheck;

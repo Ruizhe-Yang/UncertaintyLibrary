@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="-115 -115 230 230" role="img" aria-labelledby="title"><title id="title">CartesianGrid: original Modelica icon</title><ellipse cx="0" cy="0" rx="100" ry="100" fill="rgb(255,215,136)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="0" y="-63" font-family="Arial,DejaVu Sans,sans-serif" font-size="24.96" text-anchor="middle" dominant-baseline="central" fill="rgb(108,88,49)">f</text>
+<rect x="-35.52" y="-18.12" width="71.04" height="56.24" rx="0" fill="none" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-11.84,38.12 -11.84,-18.12" fill="none" stroke="rgb(128,128,128)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="11.84,38.12 11.84,-18.12" fill="none" stroke="rgb(128,128,128)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-35.52,19.62 35.52,19.62" fill="none" stroke="rgb(128,128,128)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-35.52,0.38 35.52,0.38" fill="none" stroke="rgb(128,128,128)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-35.52" cy="38.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-35.52" cy="19.62" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-35.52" cy="0.38" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-35.52" cy="-18.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-11.84" cy="38.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-11.84" cy="19.62" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-11.84" cy="0.38" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="-11.84" cy="-18.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="11.84" cy="38.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="11.84" cy="19.62" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="11.84" cy="0.38" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="11.84" cy="-18.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="35.52" cy="38.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="35.52" cy="19.62" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="35.52" cy="0.38" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="35.52" cy="-18.12" rx="1.998" ry="1.998" fill="rgb(108,88,49)" stroke="rgb(108,88,49)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/></svg>

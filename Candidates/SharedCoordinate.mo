@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Candidates;
-function SharedCoordinate "Map one common coordinate or an explicit vector of coordinates"
+function SharedCoordinate "Common or per-parameter deterministic coordinate selection"
   extends Modelica.Icons.Function;
-input Real center[:];
-  input Real scale[size(center,1)];
-  input Real xi(min=-1,max=1)=0;
-  input Boolean shared=true;
-  input Real coordinates[size(center,1)]=fill(xi,size(center,1));
-  output Real candidate[size(center,1)];
+input Real center[:] "Reference parameter values";
+  input Real scale[size(center,1)] "Nonnegative half-width for each parameter";
+  input Real xi(min=-1,max=1)=0 "Common signed unit coordinate, checked in both modes";
+  input Boolean shared=true "Use xi for every parameter rather than individual coordinates";
+  input Real coordinates[size(center,1)]=fill(xi,size(center,1)) "Individual signed unit coordinates used when shared=false";
+  output Real candidate[size(center,1)] "Selected deterministic parameter vector";
 algorithm
   assert(xi>=-1 and xi<=1 and min(scale)>=0,"Invalid shared coordinate or scale.");
   for i in 1:size(center,1) loop
@@ -34,5 +34,5 @@ algorithm
         Text(extent={{-48.1,20.34},{-17.76,1.84}}, textString="xi", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Map one common coordinate or an explicit vector of coordinates.</p><p><b>Interfaces</b> input Real center[:]; input Real scale[size(center,1)]; input Real xi(min=-1,max=1)=0; input Boolean shared=true; input Real coordinates[size(center,1)]=fill(xi,size(center,1)); output Real candidate[size(center,1)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Map one common coordinate or an explicit vector of coordinates</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> candidate</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Return <code>center[i]+scale[i]*xi</code> when shared=true. Otherwise use coordinates[i] in place of xi. Scales are nonnegative and the selected coordinates lie in [-1,1]; xi is checked even when shared=false.</p><p>A shared coordinate moves all parameters with the same orientation according to their scales. Use finite arrays in consistent parameter units. For signed multi-coordinate coupling, use AffineCoordinateMap. Neither choice defines statistical dependence.</p></html>"));
 end SharedCoordinate;

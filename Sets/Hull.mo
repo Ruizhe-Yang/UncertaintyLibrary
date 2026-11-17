@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function Hull "Smallest closed interval containing both inputs"
+function Hull "Smallest closed interval containing two intervals"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input UncertaintyLibrary.Sets.Interval b;
-  output UncertaintyLibrary.Sets.Interval bounds;
+input UncertaintyLibrary.Sets.Interval a "First finite ordered interval";
+  input UncertaintyLibrary.Sets.Interval b "Second finite ordered interval";
+  output UncertaintyLibrary.Sets.Interval bounds "Smallest closed interval containing both inputs";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   assert(UncertaintyLibrary.Utilities.Functions.Valid(b),"Invalid closed interval b.");
@@ -25,5 +25,5 @@ algorithm
         Line(points={{42.18,-20.36},{42.18,-32.2}}, color={128,128,128}, thickness=0.5, pattern=LinePattern.Dash),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Smallest closed interval containing both inputs.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input UncertaintyLibrary.Sets.Interval b; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Smallest closed interval containing both inputs</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Return <code>[min(a.lo,b.lo),max(a.hi,b.hi)]</code> after validating both inputs.</p><p>The hull includes any gap between disjoint intervals. It is a single enclosing interval, not a representation of their disjoint union.</p></html>"));
 end Hull;

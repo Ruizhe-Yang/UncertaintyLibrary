@@ -1,8 +1,8 @@
 within UncertaintyLibrary.Perturbations;
-function QuantizationInterval "按舍入量化步长恢复可兼容真值区间"
-  input Real reading;
-  input Real resolution = 0.01 "Nearest-code interval width, reading unit";
-  output UncertaintyLibrary.Sets.Interval compatible;
+function QuantizationInterval "Closed measurement bin for rounding to the nearest code"
+  input Real reading "Rounded code value in the measurement unit";
+  input Real resolution = 0.01 "Positive full width of the nearest-code bin";
+  output UncertaintyLibrary.Sets.Interval compatible "Closed interval extending half a resolution to each side";
 algorithm
   assert(resolution>0,"Resolution must be positive.");
   compatible := UncertaintyLibrary.Sets.Interval(reading-resolution/2,reading+resolution/2);
@@ -20,17 +20,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 按舍入量化步长恢复可兼容真值区间</p><p><b>Interfaces</b> input Real reading; input Real resolution = 0.01 \"Nearest-code interval width, reading unit\"; output UncertaintyLibrary.Sets.Interval compatible</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 按舍入量化步长恢复可兼容真值区间</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.BoundedMeasurement\">UncertaintyLibrary.Examples.BoundedMeasurement</a></p>
-<p>按舍入量化步长恢复可兼容真值区间</p>
-<p><b>行为</b> 对最近码量化，读数±半步长给闭区间，包含两侧平局。</p>
-<p><b>最小用法</b> 传入量化的角度或电压读数和分辨率。</p>
-<p><b>适用边界</b> 只覆盖未饱和的最近码量化。截断、过量程和标定偏差由独立输入描述。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real reading</code></li>
-<li><code>input Real resolution = 0.01 \"Nearest-code interval width, reading unit\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval compatible</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Return <code>[reading-resolution/2,reading+resolution/2]</code> for a positive resolution. The supplied reading represents a rounded code value and resolution is its full bin width.</p><p>The function reconstructs a compatible closed bin; it does not quantise the input reading. Both endpoints are included, so adjacent bins share their boundary.</p></html>"));
 end QuantizationInterval;

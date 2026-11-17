@@ -1,13 +1,13 @@
 within UncertaintyLibrary.Sets;
-function AffineMap "Map both endpoints with an affine function"
+function AffineMap "Affine image with endpoint reordering"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input Real scale=1;
-  input Real offset=0;
-  output UncertaintyLibrary.Sets.Interval bounds;
+input UncertaintyLibrary.Sets.Interval a "Finite ordered input interval";
+  input Real scale=1 "Fixed affine multiplier";
+  input Real offset=0 "Fixed additive term in the output unit";
+  output UncertaintyLibrary.Sets.Interval bounds "Ordered interval image of the affine relation";
 protected
-  Real left;
-  Real right;
+  Real left "Image of the lower input endpoint";
+  Real right "Image of the upper input endpoint";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   left:=scale*a.lo+offset;
@@ -28,5 +28,5 @@ algorithm
         Text(extent={{-45.14,40.32},{45.88,22.56}}, textString="a*x+b", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Map both endpoints with an affine function.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input Real scale=1; input Real offset=0; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Map both endpoints with an affine function</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Evaluate <code>scale*x+offset</code> at both endpoints of a and sort the two results. Negative scale reverses endpoint order; zero scale gives a singleton at offset.</p><p>Call <code>AffineMap(a,scale,offset)</code> with dimensionally compatible coefficients. The input interval and resulting endpoints are checked for validity.</p></html>"));
 end AffineMap;

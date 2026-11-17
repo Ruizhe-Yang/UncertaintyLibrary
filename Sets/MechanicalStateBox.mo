@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Sets;
-function MechanicalStateBox "在位置速度初值盒内生成一致的平动初态"
-  input UncertaintyLibrary.Sets.Interval positionRange "Position bounds in m";
-  input UncertaintyLibrary.Sets.Interval speedRange "Velocity bounds in m/s";
-  input Real fractions[2] = {0.5,0.5};
-  output Modelica.Units.SI.Position position;
-  output Modelica.Units.SI.Velocity velocity;
+function MechanicalStateBox "Selected position and velocity from independent state intervals"
+  input UncertaintyLibrary.Sets.Interval positionRange "Position interval in metres";
+  input UncertaintyLibrary.Sets.Interval speedRange "Velocity interval in metres per second";
+  input Real fractions[2] = {0.5,0.5} "Signed coordinates for position and velocity, each in [-1,1]";
+  output Modelica.Units.SI.Position position "Selected position for an explicit initial-state binding";
+  output Modelica.Units.SI.Velocity velocity "Selected velocity for an explicit initial-state binding";
 algorithm
   position := UncertaintyLibrary.Sets.SelectPoint(positionRange,fractions[1]);
   velocity := UncertaintyLibrary.Sets.SelectPoint(speedRange,fractions[2]);
@@ -21,19 +21,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 在位置速度初值盒内生成一致的平动初态</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval positionRange \"Position bounds in m\"; input UncertaintyLibrary.Sets.Interval speedRange \"Velocity bounds in m/s\"; input Real fractions[2] = {0.5,0.5}; output Modelica.Units.SI.Position position; output Modelica.Units.SI.Velocity velocity</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 在位置速度初值盒内生成一致的平动初态</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p>
-<p>在位置速度初值盒内生成一致的平动初态</p>
-<p><b>行为</b> 两条坐标各自选择闭区间内的点。用于宿主参数初始化。</p>
-<p><b>最小用法</b> 把 position、velocity 映射到 MSL Mass 的状态初值与 fixed。</p>
-<p><b>适用边界</b> 该盒允许独立组合。机械约束或关联初值需要先筛选。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval positionRange \"Position bounds in m\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval speedRange \"Velocity bounds in m/s\"</code></li>
-<li><code>input Real fractions[2] = {0.5,0.5}</code></li>
-<li><code>output Modelica.Units.SI.Position position</code></li>
-<li><code>output Modelica.Units.SI.Velocity velocity</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">MechanicalInertiaInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Select position and velocity by calling SelectPoint on their respective ranges. Although the input is named <code>fractions</code>, each entry is a signed coordinate in [-1,1].</p><p>Use {-1,-1} for both lower endpoints, {0,0} for both midpoints and {1,1} for both upper endpoints. The default {0.5,0.5} selects three quarters of the distance from each lower endpoint. Bind the returned values to the receiving model's initial states explicitly.</p></html>"));
 end MechanicalStateBox;

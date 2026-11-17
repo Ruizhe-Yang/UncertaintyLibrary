@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Analysis;
-function WindPressureBounds "由风速密度范围计算风动压界"
-  input UncertaintyLibrary.Sets.Interval speed "Signed flow speed in m/s";
-  input UncertaintyLibrary.Sets.Interval density "kg/m3";
-  output UncertaintyLibrary.Sets.Interval pressure "Dynamic pressure in Pa";
+function WindPressureBounds "Dynamic-pressure interval from signed speed and density"
+  input UncertaintyLibrary.Sets.Interval speed "Signed flow-speed interval in metres per second";
+  input UncertaintyLibrary.Sets.Interval density "Nonnegative density interval in kilograms per cubic metre";
+  output UncertaintyLibrary.Sets.Interval pressure "Nonnegative dynamic-pressure interval in pascals";
 protected
-  UncertaintyLibrary.Sets.Interval p;
+  UncertaintyLibrary.Sets.Interval p "Density interval multiplied by the squared-speed interval";
 algorithm
   assert(density.lo>=0,"Density cannot be negative.");
   p := UncertaintyLibrary.Sets.Multiply(density,UncertaintyLibrary.Analysis.QuadraticRange(speed,1,0,0));
@@ -23,17 +23,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 由风速密度范围计算风动压界</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval speed \"Signed flow speed in m/s\"; input UncertaintyLibrary.Sets.Interval density \"kg/m3\"; output UncertaintyLibrary.Sets.Interval pressure \"Dynamic pressure in Pa\"</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 由风速密度范围计算风动压界</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>由风速密度范围计算风动压界</p>
-<p><b>行为</b> 以 ρv²/2 传播，风速跨零时可能得到零下界。</p>
-<p><b>最小用法</b> 把气体密度和风速范围用于载荷估计。</p>
-<p><b>适用边界</b> 仅为动压，实际阻力方向及系数由宿主计算。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input UncertaintyLibrary.Sets.Interval speed \"Signed flow speed in m/s\"</code></li>
-<li><code>input UncertaintyLibrary.Sets.Interval density \"kg/m3\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval pressure \"Dynamic pressure in Pa\"</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">MechanicalInertiaInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Evaluate <code>0.5*density*speed^2</code> using QuadraticRange for the squared-speed interval. When the speed range contains zero, its squared lower bound is zero rather than the smaller squared endpoint.</p><p>Use speed in metres per second and nonnegative density in kilograms per cubic metre. The result is a nonnegative dynamic-pressure interval in pascals; it carries no flow direction and supplies no aerodynamic force or coefficient model.</p></html>"));
 end WindPressureBounds;

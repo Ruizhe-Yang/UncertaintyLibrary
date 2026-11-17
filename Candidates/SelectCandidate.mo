@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Candidates;
-function SelectCandidate "Select one existing one-based candidate row"
+function SelectCandidate "Selection of an existing one-based candidate row"
   extends Modelica.Icons.Function;
-input Real candidates[:,:];
-  input Integer index;
-  output Real row[size(candidates,2)];
-  output Integer candidateId;
+input Real candidates[:,:] "Existing candidate matrix with coordinates by column";
+  input Integer index "One-based row index to select";
+  output Real row[size(candidates,2)] "Selected parameter row";
+  output Integer candidateId "Original one-based row index";
 algorithm
   assert(index>=1 and index<=size(candidates,1),"Candidate index out of range.");
   row:=candidates[index,:];
@@ -22,5 +22,5 @@ algorithm
         Line(points={{-54.76,-8.52},{-40.7,-8.52}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid, arrow={Arrow.None,Arrow.Filled}),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Select one existing one-based candidate row.</p><p><b>Interfaces</b> input Real candidates[:,:]; input Integer index; output Real row[size(candidates,2)]; output Integer candidateId</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Select one existing one-based candidate row</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> row, candidateId</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Return the requested row of candidates and repeat its one-based index as candidateId. The index must lie within the existing row range.</p><p>The function does not reorder, validate or filter candidate values. Apply any feasibility mask before choosing the index and keep the original row numbering for traceability.</p></html>"));
 end SelectCandidate;

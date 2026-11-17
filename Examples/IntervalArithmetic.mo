@@ -1,17 +1,17 @@
 within UncertaintyLibrary.Examples;
-model IntervalArithmetic "Check interval addition, subtraction, product, division and negative scaling"
+model IntervalArithmetic "Compare interval arithmetic and signed affine mapping"
   extends Modelica.Icons.Example;
-  UncertaintyLibrary.Utilities.Views.ArithmeticView computed annotation(Placement(transformation(origin={-90,0},extent={{-23,-23},{23,23}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput sumLower annotation(Placement(transformation(origin={155,171},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput sumUpper annotation(Placement(transformation(origin={155,133},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput differenceLower annotation(Placement(transformation(origin={155,95},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput differenceUpper annotation(Placement(transformation(origin={155,57},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput productLower annotation(Placement(transformation(origin={155,19},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput productUpper annotation(Placement(transformation(origin={155,-19},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput ratioLower annotation(Placement(transformation(origin={155,-57},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput ratioUpper annotation(Placement(transformation(origin={155,-95},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput mappedLower annotation(Placement(transformation(origin={155,-133},extent={{-7,-7},{7,7}},rotation=0)));
-  Modelica.Blocks.Interfaces.RealOutput mappedUpper annotation(Placement(transformation(origin={155,-171},extent={{-7,-7},{7,7}},rotation=0)));
+  UncertaintyLibrary.Utilities.Views.ArithmeticView computed  "Interval calculations with fixed input ranges" annotation(Placement(transformation(origin={-90,0},extent={{-23,-23},{23,23}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput sumLower  "Lower endpoint of the interval sum" annotation(Placement(transformation(origin={155,171},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput sumUpper  "Upper endpoint of the interval sum" annotation(Placement(transformation(origin={155,133},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput differenceLower  "Lower endpoint of the interval difference" annotation(Placement(transformation(origin={155,95},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput differenceUpper  "Upper endpoint of the interval difference" annotation(Placement(transformation(origin={155,57},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput productLower  "Lower endpoint of the interval product" annotation(Placement(transformation(origin={155,19},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput productUpper  "Upper endpoint of the interval product" annotation(Placement(transformation(origin={155,-19},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput ratioLower  "Lower endpoint of the interval quotient" annotation(Placement(transformation(origin={155,-57},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput ratioUpper  "Upper endpoint of the interval quotient" annotation(Placement(transformation(origin={155,-95},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput mappedLower  "Lower endpoint after negative affine scaling" annotation(Placement(transformation(origin={155,-133},extent={{-7,-7},{7,7}},rotation=0)));
+  Modelica.Blocks.Interfaces.RealOutput mappedUpper  "Upper endpoint after negative affine scaling" annotation(Placement(transformation(origin={155,-171},extent={{-7,-7},{7,7}},rotation=0)));
 equation
   connect(computed.sumLower,sumLower) annotation(Line(points={{-67,16.1},{47,16.1},{47,171},{155,171}},color={0,0,127}));
   connect(computed.sumUpper,sumUpper) annotation(Line(points={{-67,12.52221},{-62,12.52221},{-62,133},{155,133}},color={0,0,127}));
@@ -25,5 +25,5 @@ equation
   connect(computed.mappedUpper,mappedUpper) annotation(Line(points={{-67,-16.1},{47,-16.1},{47,-171},{155,-171}},color={0,0,127}));
   annotation(experiment(StartTime=0,StopTime=1,Interval=0.002,Tolerance=1e-6),
     Diagram(coordinateSystem(extent={{-360,-240},{360,240}},preserveAspectRatio=true),graphics={Text(extent={{-192,202},{8,188}},textString="Computed values",textColor={34,61,73})}),
-    Documentation(info="<html><p><b>Purpose</b> Check interval addition, subtraction, product, division and negative scaling</p><p><b>Interfaces</b> Instances and connections are shown in the Diagram layer.</p><p><b>Parameters</b> Default values are shown in the component modifiers.</p><p><b>Behavior</b> The operation ranges are [2,8], [-7,-1], [-10,15], [-0.5,0.75] and [-5,5].</p><p><b>Initialization</b> All initial conditions are explicit in the source and component modifiers.</p><p><b>Activation and recovery</b> The given time windows follow the simulation time axis.</p><p><b>Limitations</b> This demonstration uses the declared inputs, initial conditions and idealized components.</p><p><b>Observables</b> sumLower, sumUpper, differenceLower, differenceUpper, productLower, productUpper, ratioLower, ratioUpper, mappedLower, mappedUpper</p></html>"));
+    Documentation(info="<html><p>Use a=[-2,3] and b=[4,5]. Addition gives [2,8], subtraction [-7,-1], multiplication [-10,15] and division [-0.5,0.75]. Mapping a with gain -2 and offset 1 gives [-5,5].</p><p>Inspect the paired lower and upper outputs. The operations order their result endpoints, including for a negative gain; the denominator interval excludes zero.</p></html>"));
 end IntervalArithmetic;

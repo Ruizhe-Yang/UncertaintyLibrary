@@ -1,14 +1,14 @@
 within UncertaintyLibrary.Utilities.Views;
-block CandidateView "Show cardinalities and ordering of finite candidate grids"
-parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(-1,1)};
-  parameter Real cornerSet[4,2]=UncertaintyLibrary.Candidates.BoxCorners(box);
-  parameter Real gridSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3});
-  parameter Real singletonGrid[1]=UncertaintyLibrary.Candidates.Grid1D(box[1],1);
-  Modelica.Blocks.Interfaces.IntegerOutput corners annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.IntegerOutput gridPoints annotation(Placement(transformation(origin={100,35},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,35},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput singleton annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput secondCornerY annotation(Placement(transformation(origin={100,-35},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-35},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput middleX annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
+block CandidateView "Display finite-grid size and coordinate ordering"
+parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(-1,1)} "Two closed coordinate intervals";
+  parameter Real cornerSet[4,2]=UncertaintyLibrary.Candidates.BoxCorners(box) "Four box corners in final-coordinate-fastest order";
+  parameter Real gridSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3}) "Nine points in the default three-by-three grid";
+  parameter Real singletonGrid[1]=UncertaintyLibrary.Candidates.Grid1D(box[1],1) "Midpoint grid on the first interval";
+  Modelica.Blocks.Interfaces.IntegerOutput corners  "Number of corner rows" annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.IntegerOutput gridPoints  "Number of Cartesian grid rows" annotation(Placement(transformation(origin={100,35},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,35},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput singleton  "Single midpoint on the first interval" annotation(Placement(transformation(origin={100,0},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,0},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput secondCornerY  "Second coordinate of the second corner row" annotation(Placement(transformation(origin={100,-35},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-35},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput middleX  "First coordinate of the fifth grid row" annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
 equation
   corners=size(cornerSet,1);
   gridPoints=size(gridSet,1);
@@ -45,5 +45,5 @@ equation
         Text(extent={{43,80},{70,57}}, textString="N", textColor={108,88,49}, fontSize=0),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Show cardinalities and ordering of finite candidate grids.</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.IntegerOutput corners; Modelica.Blocks.Interfaces.IntegerOutput gridPoints; Modelica.Blocks.Interfaces.RealOutput singleton; Modelica.Blocks.Interfaces.RealOutput secondCornerY; Modelica.Blocks.Interfaces.RealOutput middleX</p><p><b>Parameters</b> parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(-1,1)}; parameter Real cornerSet[4,2]=UncertaintyLibrary.Candidates.BoxCorners(box); parameter Real gridSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3}); parameter Real singletonGrid[1]=UncertaintyLibrary.Candidates.Grid1D(box[1],1)</p><p><b>Behavior</b> Show cardinalities and ordering of finite candidate grids</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> corners, gridPoints, singleton, secondCornerY, middleX</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p></html>"));
+    Documentation(info="<html><p>Generate four corners and a 3-by-3 Cartesian grid for a two-dimensional box. Also generate a singleton grid on the first interval. The final coordinate changes fastest in the candidate rows.</p><p>The default outputs are four corners, nine grid points, singleton value 1, second-corner second coordinate 1 and middle-row first coordinate 1. Array dimensions are fixed for this view.</p></html>"));
 end CandidateView;

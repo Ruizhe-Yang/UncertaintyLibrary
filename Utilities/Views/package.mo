@@ -1,5 +1,5 @@
 within UncertaintyLibrary.Utilities;
-package Views "Views"
+package Views "Signal views of selected uncertainty calculations"
   extends Modelica.Icons.Package;
   annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={
@@ -9,5 +9,5 @@ package Views "Views"
         Line(points={{-37.5452,7.36},{37.5452,7.36}}, color={108,88,49}, thickness=1.2, pattern=LinePattern.Solid),
         Line(points={{-37.5452,-1.1408},{-37.5452,15.8608}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid),
         Line(points={{37.5452,-1.1408},{37.5452,15.8608}}, color={108,88,49}, thickness=1, pattern=LinePattern.Solid)
-      }));
+      }), Documentation(info="<html><p>Compact views used by the examples to display interval endpoints, candidate counts, feasibility, finite-set extrema, sensitivity and sampled response envelopes. Most views expose parameter-bound calculations; EnvelopeView samples three connected responses.</p></html>"));
 end Views;

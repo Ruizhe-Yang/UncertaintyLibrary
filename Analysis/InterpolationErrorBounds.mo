@@ -1,12 +1,12 @@
 within UncertaintyLibrary.Analysis;
-function InterpolationErrorBounds "用二阶导数界估计线性插值误差"
-  input Real estimate;
-  input Real spacing = 1 "Distance between interpolation nodes in input units";
-  input Real fraction = 0.5 "Coordinate between the two nodes";
-  input Real secondDerivativeBound = 1 "Absolute curvature bound in output/input-unit squared";
-  output UncertaintyLibrary.Sets.Interval response;
+function InterpolationErrorBounds "Linear-interpolation error from a supplied curvature bound"
+  input Real estimate "Linear interpolant at the selected fractional coordinate";
+  input Real spacing = 1 "Positive distance between the two interpolation nodes";
+  input Real fraction = 0.5 "Fractional coordinate from the first node to the second";
+  input Real secondDerivativeBound = 1 "Absolute second-derivative bound over the whole interpolation interval";
+  output UncertaintyLibrary.Sets.Interval response "Interpolation estimate expanded by the error radius";
 protected
-  Real radius;
+  Real radius "Nonnegative interpolation-error radius";
 algorithm
   assert(spacing>0 and fraction>=0 and fraction<=1 and secondDerivativeBound>=0,"Invalid interpolation bound input.");
   radius := 0.5*secondDerivativeBound*spacing^2*fraction*(1-fraction);
@@ -28,19 +28,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 用二阶导数界估计线性插值误差</p><p><b>Interfaces</b> input Real estimate; input Real spacing = 1 \"Distance between interpolation nodes in input units\"; input Real fraction = 0.5 \"Coordinate between the two nodes\"; input Real secondDerivativeBound = 1 \"Absolute curvature bound in output/input-unit squared\"; output UncertaintyLibrary.Sets.Interval response</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 用二阶导数界估计线性插值误差</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.LocalSensitivity\">UncertaintyLibrary.Examples.LocalSensitivity</a></p>
-<p>用二阶导数界估计线性插值误差</p>
-<p><b>行为</b> 由线性插值余项给出对称误差界，端点余项为零。</p>
-<p><b>最小用法</b> 在查表输入位置已知时给区间宽度和该段绝对二阶导界。</p>
-<p><b>适用边界</b> 保证依赖该段确实存在用户指定的曲率上界。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real estimate</code></li>
-<li><code>input Real spacing = 1 \"Distance between interpolation nodes in input units\"</code></li>
-<li><code>input Real fraction = 0.5 \"Coordinate between the two nodes\"</code></li>
-<li><code>input Real secondDerivativeBound = 1 \"Absolute curvature bound in output/input-unit squared\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval response</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Expand estimate by the radius <code>0.5*secondDerivativeBound*spacing^2*fraction*(1-fraction)</code>. The coordinate fraction lies in [0,1], spacing is positive and the absolute second-derivative bound is nonnegative.</p><p>Supply the linear interpolant at that fraction and a curvature bound valid throughout the interpolation interval. The radius is zero at either node and largest at the midpoint. The function does not derive or verify the supplied curvature bound.</p></html>"));
 end InterpolationErrorBounds;

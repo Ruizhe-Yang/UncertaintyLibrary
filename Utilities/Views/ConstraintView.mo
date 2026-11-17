@@ -1,17 +1,17 @@
 within UncertaintyLibrary.Utilities.Views;
-block ConstraintView "Show a finite feasible set and shared-coordinate endpoints"
-parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(0,2)};
-  parameter Real candidateSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3});
-  parameter Real negative[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},-1);
-  parameter Real middle[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},0);
-  parameter Real positive[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},1);
-    Modelica.Blocks.Interfaces.IntegerOutput acceptedCount annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput sharedLower annotation(Placement(transformation(origin={100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,23.33333},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput sharedMiddle annotation(Placement(transformation(origin={100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-23.33333},extent={{-10,-10},{10,10}})));
-  Modelica.Blocks.Interfaces.RealOutput sharedUpper annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
-  Boolean mask[9];
-  Integer indices[9];
-  Boolean available;
+block ConstraintView "Display finite candidate feasibility and a shared coordinate"
+parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(0,2)} "Two-dimensional closed box";
+  parameter Real candidateSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3}) "Nine points of the default three-by-three grid";
+  parameter Real negative[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},-1) "Mapped vector at shared coordinate -1";
+  parameter Real middle[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},0) "Mapped vector at shared coordinate zero";
+  parameter Real positive[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},1) "Mapped vector at shared coordinate 1";
+    Modelica.Blocks.Interfaces.IntegerOutput acceptedCount  "Number of grid rows satisfying the box and inequality" annotation(Placement(transformation(origin={100,70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,70},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput sharedLower  "Second mapped component at coordinate -1" annotation(Placement(transformation(origin={100,23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,23.33333},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput sharedMiddle  "Second mapped component at coordinate zero" annotation(Placement(transformation(origin={100,-23.33333},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-23.33333},extent={{-10,-10},{10,10}})));
+  Modelica.Blocks.Interfaces.RealOutput sharedUpper  "Second mapped component at coordinate 1" annotation(Placement(transformation(origin={100,-70},extent={{-10,-10},{10,10}}),iconTransformation(origin={100,-70},extent={{-10,-10},{10,10}})));
+  Boolean mask[9] "Feasibility flag for each original candidate row";
+  Integer indices[9] "Accepted original row indices followed by zeros";
+  Boolean available "True when at least one candidate row is accepted";
 equation
   (mask,indices,acceptedCount,available)=UncertaintyLibrary.Constraints.FilterCandidates(candidateSet,box,[1.0,1.0],{2.0});
   sharedLower=negative[2];
@@ -31,5 +31,5 @@ equation
         Line(points={{18.48,24.94},{27.72,34.18}}, color={128,128,128}, thickness=0.8, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Show a finite feasible set and shared-coordinate endpoints.</p><p><b>Interfaces</b> Modelica.Blocks.Interfaces.IntegerOutput acceptedCount; Modelica.Blocks.Interfaces.RealOutput sharedLower; Modelica.Blocks.Interfaces.RealOutput sharedMiddle; Modelica.Blocks.Interfaces.RealOutput sharedUpper</p><p><b>Parameters</b> parameter UncertaintyLibrary.Sets.Interval box[2]={UncertaintyLibrary.Sets.Interval(0,2),UncertaintyLibrary.Sets.Interval(0,2)}; parameter Real candidateSet[9,2]=UncertaintyLibrary.Candidates.CartesianGrid(box,{3,3}); parameter Real negative[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},-1); parameter Real middle[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},0); parameter Real positive[2]=UncertaintyLibrary.Candidates.SharedCoordinate({2,5},{0.1,0.3},1)</p><p><b>Behavior</b> Show a finite feasible set and shared-coordinate endpoints</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> acceptedCount, sharedLower, sharedMiddle, sharedUpper</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates\">UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates</a></p></html>"));
+    Documentation(info="<html><p>Filter a 3-by-3 grid using its box and <code>x1+x2 &lt;= 2</code>. The default [0,2] by [0,2] grid admits six rows. The mask retains row order and the index array contains accepted original row numbers followed by zeros.</p><p>Separately map shared coordinates -1, 0 and 1 through centre {2,5} and scale {0.1,0.3}. The displayed second components are 4.7, 5 and 5.3. These maps do not change the grid filter.</p></html>"));
 end ConstraintView;

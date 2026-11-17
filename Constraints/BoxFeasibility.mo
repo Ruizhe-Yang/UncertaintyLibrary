@@ -1,10 +1,10 @@
 within UncertaintyLibrary.Constraints;
-function BoxFeasibility "Check each dimension of a closed box"
+function BoxFeasibility "Closed-box membership with per-coordinate results"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval box[:];
-  input Real x[size(box,1)];
-  output Boolean feasible;
-  output Boolean mask[size(box,1)];
+input UncertaintyLibrary.Sets.Interval box[:] "Closed interval for each coordinate";
+  input Real x[size(box,1)] "Point with coordinates corresponding to box";
+  output Boolean feasible "True when every coordinate belongs to its interval";
+  output Boolean mask[size(box,1)] "Membership result for each coordinate";
 algorithm
   feasible:=true;
   for i in 1:size(box,1) loop
@@ -22,5 +22,5 @@ algorithm
         Line(points={{21.275,-46.26},{27.602,-52.92},{39.923,-36.936}}, color={75,138,73}, thickness=1.5, pattern=LinePattern.Solid),
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
-    Documentation(info="<html><p><b>Purpose</b> Check each dimension of a closed box.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval box[:]; input Real x[size(box,1)]; output Boolean feasible; output Boolean mask[size(box,1)]</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Check each dimension of a closed box</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> feasible, mask</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates\">UncertaintyLibrary.Examples.CoupledAndConstrainedCandidates</a></p></html>"));
+    Documentation(info="<html><p>Call <code>BoxFeasibility(box,x)</code> to obtain <code>feasible</code> and the per-coordinate <code>mask</code>. Both interval endpoints are included, and feasibility is the conjunction of all membership results.</p><p>Each interval is validated by Contains; an invalid interval raises an assertion. An empty box returns true with an empty mask.</p></html>"));
 end BoxFeasibility;

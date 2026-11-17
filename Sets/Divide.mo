@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Sets;
-function Divide "Divide two intervals with a denominator separated from zero"
+function Divide "Interval quotient with a denominator excluding zero"
   extends Modelica.Icons.Function;
-input UncertaintyLibrary.Sets.Interval a;
-  input UncertaintyLibrary.Sets.Interval b;
-  output UncertaintyLibrary.Sets.Interval bounds;
+input UncertaintyLibrary.Sets.Interval a "Numerator interval";
+  input UncertaintyLibrary.Sets.Interval b "Denominator interval strictly separated from zero";
+  output UncertaintyLibrary.Sets.Interval bounds "Interval quotient for all admissible numerator and denominator values";
 algorithm
   assert(UncertaintyLibrary.Utilities.Functions.Valid(a),"Invalid closed interval a.");
   assert(UncertaintyLibrary.Utilities.Functions.Valid(b),"Invalid closed interval b.");
@@ -29,5 +29,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Inline=false,
-    Documentation(info="<html><p><b>Purpose</b> Divide two intervals with a denominator separated from zero.</p><p><b>Interfaces</b> input UncertaintyLibrary.Sets.Interval a; input UncertaintyLibrary.Sets.Interval b; output UncertaintyLibrary.Sets.Interval bounds</p><p><b>Parameters</b> No tuning parameters; use the declared input contract.</p><p><b>Behavior</b> Divide two intervals with a denominator separated from zero</p><p><b>Initialization</b> Evaluated from the current inputs and parameter bindings.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Outputs retain the units declared at the interface. Numerical values depend on the supplied input and parameter range.</p><p><b>Observables</b> Public outputs and the stated input conditions.</p><p><b>Set semantics</b> All intervals and candidates are deterministic. Bounds use ordinary floating-point arithmetic. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.ToleranceAndSelection\">UncertaintyLibrary.Examples.ToleranceAndSelection</a></p></html>"));
+    Documentation(info="<html><p>Form the reciprocal interval <code>[1/b.hi,1/b.lo]</code> and multiply it by a. The denominator must lie strictly above or strictly below zero.</p><p>Call <code>Divide(a,b)</code>. A denominator that includes zero triggers an assertion. The subsequent [0,0] assignment is not a valid quotient fallback.</p></html>"));
 end Divide;

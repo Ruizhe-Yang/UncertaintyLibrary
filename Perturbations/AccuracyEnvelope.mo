@@ -1,11 +1,11 @@
 within UncertaintyLibrary.Perturbations;
-function AccuracyEnvelope "由绝对误差与读数比例误差构造测量范围"
-  input Real reading;
-  input Real absoluteError = 0.01;
-  input Real relativeError = 0.005 "Fraction of displayed magnitude";
-  output UncertaintyLibrary.Sets.Interval compatible;
+function AccuracyEnvelope "Measurement interval from absolute and reading-relative allowances"
+  input Real reading "Displayed measurement value";
+  input Real absoluteError = 0.01 "Nonnegative allowance in the reading unit";
+  input Real relativeError = 0.005 "Nonnegative fraction of the displayed magnitude";
+  output UncertaintyLibrary.Sets.Interval compatible "Closed interval centred on the supplied reading";
 protected
-  Real radius;
+  Real radius "Sum of the absolute and reading-relative allowances";
 algorithm
   assert(absoluteError>=0 and relativeError>=0,"Error allowances must be nonnegative.");
   radius := absoluteError+relativeError*abs(reading);
@@ -25,18 +25,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 由绝对误差与读数比例误差构造测量范围</p><p><b>Interfaces</b> input Real reading; input Real absoluteError = 0.01; input Real relativeError = 0.005 \"Fraction of displayed magnitude\"; output UncertaintyLibrary.Sets.Interval compatible</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 由绝对误差与读数比例误差构造测量范围</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.BoundedMeasurement\">UncertaintyLibrary.Examples.BoundedMeasurement</a></p>
-<p>由绝对误差与读数比例误差构造测量范围</p>
-<p><b>行为</b> 按指定读数的幅值计算相对误差，再加绝对误差。</p>
-<p><b>最小用法</b> 把仪表规格 ±(0.5% 读数 + 0.01 单位) 输入此函数。</p>
-<p><b>适用边界</b> 该公式对应以读数为基准的规格。满量程项请折算进 absoluteError。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real reading</code></li>
-<li><code>input Real absoluteError = 0.01</code></li>
-<li><code>input Real relativeError = 0.005 \"Fraction of displayed magnitude\"</code></li>
-<li><code>output UncertaintyLibrary.Sets.Interval compatible</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">ElectricalResistanceInterval</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Form radius <code>absoluteError+relativeError*abs(reading)</code> and return reading plus or minus that radius. Both allowances must be nonnegative, with relativeError interpreted as a fraction of the displayed magnitude.</p><p>This is a deterministic specification band about the supplied reading. It neither defines a probability distribution nor inverts a relative-error relation defined against an unknown true value.</p></html>"));
 end AccuracyEnvelope;

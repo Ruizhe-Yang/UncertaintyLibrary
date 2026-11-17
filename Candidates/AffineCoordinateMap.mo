@@ -1,9 +1,9 @@
 within UncertaintyLibrary.Candidates;
-function AffineCoordinateMap "以共享确定性坐标产生关联参数"
-  input Real origin[:];
-  input Real directions[size(origin,1),:] "One column per shared coordinate";
-  input Real coordinate[size(directions,2)] "Normalized deterministic coordinates in [-1,1]";
-  output Real values[size(origin,1)];
+function AffineCoordinateMap "Affine mapping of shared coordinates to coupled parameters"
+  input Real origin[:] "Reference parameter vector";
+  input Real directions[size(origin,1),:] "Parameter changes by row, with one column per shared coordinate";
+  input Real coordinate[size(directions,2)] "Deterministic shared coordinates in the inclusive interval [-1,1]";
+  output Real values[size(origin,1)] "Affine-mapped coupled parameter vector";
 algorithm
   assert(size(origin,1)>0 and size(coordinate,1)>0,"An affine map needs input and output dimensions.");
   for i in 1:size(coordinate,1) loop
@@ -25,18 +25,5 @@ algorithm
         Text(extent={{-150,155},{150,125}}, textString="%name", textColor={0,0,255}, fontSize=0)
       }),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
-    Documentation(info="<html><p><b>Purpose</b> 以共享确定性坐标产生关联参数</p><p><b>Interfaces</b> input Real origin[:]; input Real directions[size(origin,1),:] \"One column per shared coordinate\"; input Real coordinate[size(directions,2)] \"Normalized deterministic coordinates in [-1,1]\"; output Real values[size(origin,1)]</p><p><b>Parameters</b> The declaration has no standalone tuning parameters.</p><p><b>Behavior</b> 以共享确定性坐标产生关联参数</p><p><b>Initialization</b> Use the declared initial values and host state modifiers.</p><p><b>Activation and recovery</b> Not applicable.</p><p><b>Limitations</b> Use the declared parameter range. The catalog identifies simulation coverage.</p><p><b>Observables</b> Inspect the declared output variables.</p><p><b>Set semantics</b> Deterministic input domain. No probability interpretation.</p><p><b>Example</b> <a href=\"modelica://UncertaintyLibrary.Examples.CandidateGrids\">UncertaintyLibrary.Examples.CandidateGrids</a></p>
-<p>以共享确定性坐标产生关联参数</p>
-<p><b>行为</b> 共用同一坐标的参数随之联动。输出为 origin+A·z。</p>
-<p><b>最小用法</b> 给定共享温漂或共用制造偏差方向，再选择坐标组合。</p>
-<p><b>适用边界</b> 系数携带各目标参数的单位。该映射不是概率相关性模型。</p>
-<p>接口及方向</p>
-<ul>
-<li><code>input Real origin[:]</code></li>
-<li><code>input Real directions[size(origin,1),:] \"One column per shared coordinate\"</code></li>
-<li><code>input Real coordinate[size(directions,2)] \"Normalized deterministic coordinates in [-1,1]\"</code></li>
-<li><code>output Real values[size(origin,1)]</code></li>
-</ul>
-<p><a href=\"modelica://UncertaintyLibrary.Examples.FiniteCandidateWorstCase\">CorrelatedWorstCase</a> 提供同域宿主参考。</p>
-</html>"));
+    Documentation(info="<html><p>Return <code>origin+directions*coordinate</code>, with one directions column for each shared coordinate in [-1,1]. Both input and output dimensions must be positive.</p><p>Use signed direction coefficients to express same-direction or opposing parameter changes. Supply finite origin and matrix entries in the output parameter units. The map defines deterministic coupling, not a statistical correlation model.</p></html>"));
 end AffineCoordinateMap;
